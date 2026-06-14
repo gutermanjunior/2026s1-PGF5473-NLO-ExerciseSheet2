@@ -33,24 +33,19 @@ Computational and theoretical framework addressing advanced topics in nonlinear 
 
 ## ⚛️ Core Topics Covered
 
-* 
-**Problem 1:** Numerical optimization of the Boyd-Kleinman criterion for SHG using Gaussian beams, alongside phase mismatch behavior comparisons with plane waves.
+* **Problem 1:** Numerical optimization of the Boyd-Kleinman criterion for SHG using Gaussian beams, alongside phase mismatch behavior comparisons with plane waves.
 
 
-* 
-**Problem 2:** Solving the paraxial wave equation in cylindrical coordinates to derive Laguerre-Gaussian (LG) modes.
+* **Problem 2:** Solving the paraxial wave equation in cylindrical coordinates to derive Laguerre-Gaussian (LG) modes.
 
 
-* 
-**Problem 3:** Block-diagonal linear transformations and superpositions between Hermite-Gaussian (HG) and Laguerre-Gaussian (LG) spatial modes.
+* **Problem 3:** Block-diagonal linear transformations and superpositions between Hermite-Gaussian (HG) and Laguerre-Gaussian (LG) spatial modes.
 
 
-* 
-**Problem 4:** Modal frequency splitting calculations within optical resonators as a function of mirror curvature and cavity geometry.
+* **Problem 4:** Modal frequency splitting calculations within optical resonators as a function of mirror curvature and cavity geometry.
 
 
-* 
-**Problem 5:** Derivation and numerical stability analysis of the dynamical equations governing a Doubly-Resonant OPO (DRO).
+* **Problem 5:** Derivation and numerical stability analysis of the dynamical equations governing a Doubly-Resonant OPO (DRO).
 
 
 

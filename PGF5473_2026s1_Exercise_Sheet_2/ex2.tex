@@ -1,0 +1,191 @@
+% ============================================================================
+% ex2.tex
+% ============================================================================
+% Exercício individual da lista.
+% Este arquivo deve conter apenas o conteúdo do exercício e, quando desejado,
+% sua resolução. Não deve carregar pacotes nem redefinir configurações globais.
+%
+% Interface adotada neste exemplo:
+% - ambiente `exercicio` com identificador textual livre;
+% - ambiente `resolucao` para a solução;
+% - subseções internas apenas para organizar a exposição.
+% ============================================================================
+
+\begin{exercicio}[Problem 2 --- Paraxial Wave Equation in Cylindrical Coordinates]
+Solve the paraxial wave equation in cylindrical coordinates, and show that the solutions are the Laguerre-Gaussian modes.
+\end{exercicio}
+
+
+\begin{resolucao}[Solution]
+
+    \paragraph*{Theoretical References}
+    The detailed physics of paraxial wave propagation and spatial mode structures are anchored in \textbf{Chapter 3 of \authorlinkcite{Saleh}} (specifically Section 3.4, \textit{Laguerre-Gaussian Beams}, and Section 3.3 for the generic separation approach). The general paraxial framework is aligned with the wave propagation equations discussed in \textbf{Chapter 2 of \authorlinkcite{Boyd}}.
+
+    \subsection*{1. Derivation of the Paraxial Wave Equation (PWE)}
+
+        We start from the linear, monochromatic Helmholtz equation for a scalar optical field $U(\mathbf{r})$ propagating in a homogeneous medium with wavevector $k$:
+        \begin{equation}
+            \nabla^2 U(\mathbf{r}) + k^2 U(\mathbf{r}) = 0.
+            \label{eq:helmholtz}
+        \end{equation}
+        To describe a beam-like structure where energy flows predominantly along the positive $z$-axis, we isolate the rapid spatial phase oscillation by expressing the total field as the product of a slowly varying complex envelope $A(\mathbf{r})$ and a plane wave carrier:
+        \begin{equation}
+            U(\rho, \phi, z) = A(\rho, \phi, z) e^{i k z}.
+            \label{eq:envelope_separation}
+        \end{equation}
+        
+        To substitute Eq.~\eqref{eq:envelope_separation} into Eq.~\eqref{eq:helmholtz}, we must evaluate the Laplacian operator. In cylindrical coordinates, the full Laplacian is split into transverse ($\nabla_T^2$) and longitudinal components:
+        \[
+        \nabla^2 = \nabla_T^2 + \frac{\partial^2}{\partial z^2} = \frac{\partial^2}{\partial \rho^2} + \frac{1}{\rho}\frac{\partial}{\partial \rho} + \frac{1}{\rho^2}\frac{\partial^2}{\partial \phi^2} + \frac{\partial^2}{\partial z^2}.
+        \]
+        Let us explicitly calculate the first and second partial derivatives of the field $U$ with respect to the propagation coordinate $z$ using the product rule:
+        \[
+        \frac{\partial U}{\partial z} = \left( \frac{\partial A}{\partial z} + i k A \right) e^{i k z},
+        \]
+        \begin{equation}
+            \frac{\partial^2 U}{\partial z^2} = \frac{\partial}{\partial z} \left[ \left( \frac{\partial A}{\partial z} + i k A \right) e^{i k z} \right] = \left( \frac{\partial^2 A}{\partial z^2} + i 2k \frac{\partial A}{\partial z} - k^2 A \right) e^{i k z}.
+            \label{eq:z_derivatives}
+        \end{equation}
+        
+        Substituting Eq.~\eqref{eq:z_derivatives} back into the Helmholtz equation \eqref{eq:helmholtz} yields:
+        \[
+        \left( \nabla_T^2 A + \frac{\partial^2 A}{\partial z^2} + i 2k \frac{\partial A}{\partial z} - k^2 A \right) e^{i k z} + k^2 A e^{i k z} = 0.
+        \]
+        The terms involving $k^2 A$ cancel out exactly. Dividing the remaining terms by the common non-zero phase factor $e^{i k z}$, we obtain:
+        \begin{equation}
+            \nabla_T^2 A + \frac{\partial^2 A}{\partial z^2} + i 2k \frac{\partial A}{\partial z} = 0.
+        \end{equation}
+        
+        At this stage, we invoke the \textbf{paraxial approximation}. For a well-collimated optical beam, the envelope $A(\mathbf{r})$ varies slowly along the propagation direction $z$ compared to its transverse variation, meaning its characteristic scale of variation along $z$ is much larger than the optical wavelength $\lambda$. Mathematically, this implies that the second-order derivative with respect to $z$ is negligible compared to the first-order derivative scaled by the wavevector:
+        \begin{equation}
+            \left| \frac{\partial^2 A}{\partial z^2} \right| \ll 2k \left| \frac{\partial A}{\partial z} \right|.
+        \end{equation}
+        Dropping the $\frac{\partial^2 A}{\partial z^2}$ term leads directly to the standard form of the \textbf{Paraxial Wave Equation (PWE)}:
+        \begin{equation}
+            \frac{\partial^2 A}{\partial \rho^2} + \frac{1}{\rho}\frac{\partial A}{\partial \rho} + \frac{1}{\rho^2}\frac{\partial^2 A}{\partial \phi^2} + i 2k \frac{\partial A}{\partial z} = 0.
+            \label{eq:pwe_cyl_final}
+        \end{equation}
+
+    \subsection*{2. Azimuthal Separation of Variables}
+
+        Because the paraxial wave equation in cylindrical coordinates \eqref{eq:pwe_cyl_final} possesses cylindrical symmetry, any physical rotation around the $z$-axis must map a solution onto another valid solution. This allows us to separate the azimuthal dependence by seeking solutions that are eigenfunctions of the angular momentum operator, characterized by an integer index $l$ (representing the topological charge or orbital angular momentum):
+        \begin{equation}
+            A(\rho, \phi, z) = u(\rho, z) e^{-i l \phi}, \quad l \in \mathbb{Z}.
+            \label{eq:azimuthal_sep}
+        \end{equation}
+        The second derivative of this envelope with respect to the angle $\phi$ satisfies:
+        \[
+        \frac{\partial^2 A}{\partial \phi^2} = (-i l)^2 u(\rho, z) e^{-i l \phi} = -l^2 u(\rho, z) e^{-i l \phi}.
+        \]
+        Substituting this result into Eq.~\eqref{eq:pwe_cyl_final} and factoring out the exponential term $e^{-i l \phi}$, we eliminate the angular coordinate, arriving at the reduced **radial paraxial wave equation**:
+        \begin{equation}
+            \frac{\partial^2 u}{\partial \rho^2} + \frac{1}{\rho}\frac{\partial u}{\partial \rho} - \frac{l^2}{\rho^2}u + i 2k \frac{\partial u}{\partial z} = 0.
+            \label{eq:radial_pwe_step}
+        \end{equation}
+
+    \subsection*{3. The Modulated Gaussian Ansatz}
+
+        We know from the fundamental transverse mode configuration that a basic Gaussian beam is a rigorous solution to the PWE. To find higher-order modes that share the same physical wavefront evolution, we model a trial solution for $u(\rho, z)$ where the fundamental Gaussian envelope is modulated by a generic dimensionless radial function $R$ and a general phase correction $\zeta(z)$:
+        \begin{equation}
+            u(\rho, z) = R\left(\frac{\sqrt{2}\rho}{w(z)}\right) \exp\left[ i \frac{k \rho^2}{2 q(z)} - i \zeta(z) \right],
+            \label{eq:ansatz_detailed}
+        \end{equation}
+        where $q(z) = z - i z_R$ is the complex beam parameter, $z_R = \frac{\pi n w_0^2}{\lambda}$ is the Rayleigh range, and $w(z) = w_0 \sqrt{1 + (z/z_R)^2}$ is the spot size profile.
+        
+        To transform Eq.~\eqref{eq:radial_pwe_step} into a simpler differential form, it is highly convenient to introduce a new, dimensionless radial coordinate $x$, defined such that it scales directly with the local intensity cross-section of the fundamental beam:
+        \begin{equation}
+            x = \frac{2 \rho^2}{w^2(z)}.
+            \label{eq:x_definition}
+        \end{equation}
+        This definition implies that $\rho = w(z)\sqrt{x/2}$. We now rewrite the trial solution as:
+        \begin{equation}
+            u(x, z) = R(x) \psi_0(\rho, z) e^{-i \Delta\zeta(z)},
+        \end{equation}
+        where $\psi_0(\rho, z)$ represents the fundamental Gaussian beam solution, and $\Delta\zeta(z) = \zeta(z) - \arctan(z/z_R)$ isolates the excess Gouy phase shift associated with the higher-order mode structure.
+
+    \subsection*{4. Reduction to Laguerre's Differential Equation}
+
+        We must transform the spatial derivatives from $(\rho, z)$ to the scaled coordinate $x$. Let us apply the chain rule of calculus to the function $R(x)$. First, we compute the partial derivatives with respect to the physical radial coordinate $\rho$:
+        \[
+        \frac{\partial R}{\partial \rho} = \frac{dR}{dx} \frac{\partial x}{\partial \rho} = \frac{dR}{dx} \left( \frac{4\rho}{w^2(z)} \right),
+        \]
+        \begin{equation}
+            \begin{aligned}
+                \frac{\partial^2 R}{\partial \rho^2}
+                    &=
+                    \frac{\partial}{\partial \rho}
+                    \left[
+                        \frac{4\rho}{w^2(z)}
+                        \frac{dR}{dx}
+                    \right]
+                \\[4pt]
+                    &=
+                    \frac{4}{w^2(z)}
+                    \frac{dR}{dx}
+                    +
+                    \frac{4\rho}{w^2(z)}
+                    \left(
+                        \frac{4\rho}{w^2(z)}
+                        \frac{d^2R}{dx^2}
+                    \right)
+                \\[4pt]
+                    &=
+                    \frac{4}{w^2(z)}
+                    \frac{dR}{dx}
+                    +
+                    \frac{16\rho^2}{w^4(z)}
+                    \frac{d^2R}{dx^2}.
+            \end{aligned}
+            \label{eq:chain_rule_rho}
+        \end{equation}
+        Using the definition $x = 2\rho^2/w^2(z)$, the second term in Eq.~\eqref{eq:chain_rule_rho} simplifies directly to $\frac{8x}{w^2(z)}\frac{d^2 R}{dx^2}$.
+        
+        Now, substituting these transformed coordinate derivatives back into the radial paraxial wave equation \eqref{eq:radial_pwe_step}, and collecting the coefficients multiplying $\frac{d^2 R}{dx^2}$, $\frac{dR}{dx}$, and $R(x)$, a long but systematic cancellation occurs because $\psi_0(\rho, z)$ independently satisfies the PWE. The cross-terms involving the derivative of the beam radius $\frac{dw}{dz}$ group together, leaving a single ordinary differential equation for the structural modulation function $R(x)$:
+        \begin{equation}
+            \resizebox{0.8\columnwidth}{!}{$
+                x \frac{d^2 R(x)}{dx^2}
+                + (|l| + 1 - x) \frac{dR(x)}{dx}
+                + \left( \frac{1}{2} w^2(z) k \frac{d(\Delta\zeta)}{dz} \right) R(x)
+                = 0
+            $}
+            \label{eq:intermediate_laguerre}
+        \end{equation}
+        
+        For $R(x)$ to depend solely on the dimensionless transverse variable $x$, the coefficient inside the parentheses in Eq.~\eqref{eq:intermediate_laguerre} must be a strict separation constant, which we define as an arbitrary number $p$:
+        \begin{equation}
+            p = \frac{1}{2} w^2(z) k \frac{d(\Delta\zeta)}{dz}.
+            \label{eq:separation_p}
+        \end{equation}
+        With this substitution, Eq.~\eqref{eq:intermediate_laguerre} becomes:
+        \begin{equation}
+            x \frac{d^2 R(x)}{dx^2} + (|l| + 1 - x) \frac{dR(x)}{dx} + p R(x) = 0.
+            \label{eq:associated_laguerre_final}
+        \end{equation}
+        
+        Eq.~\eqref{eq:associated_laguerre_final} is the classical \textbf{associated Laguerre differential equation}. From the mathematical theory of boundary value problems, if the parameter $p$ is not a non-negative integer ($p \neq 0, 1, 2, \dots$), the power series solution for $R(x)$ becomes an infinite series that diverges as $x \to \infty$ faster than the Gaussian term decays. This would represent a beam with infinite total power, which is unphysical. Therefore, physical normalizability forces the boundary condition that $p$ must be a non-negative integer, meaning the solutions truncate into the well-known **associated Laguerre polynomials**, $L_p^{|l|}(x)$.
+
+    \subsection*{5. Determination of the Generalized Gouy Phase}
+
+        To find the physical phase evolution $\zeta(z)$, we integrate the separation relation established in Eq.~\eqref{eq:separation_p}. Isolating the derivative of $\Delta\zeta$:
+        \[
+        \frac{d(\Delta\zeta)}{dz} = \frac{2p}{k w^2(z)}.
+        \]
+        Recalling that the local beam waist varies as\\$w^2(z) = w_0^2 \left(1 + \frac{z^2}{z_R^2}\right)$ and that the Rayleigh range satisfies $k w_0^2 = 2 z_R$, we can write:
+        \[
+        \frac{d(\Delta\zeta)}{dz} = \frac{2p}{\left(2 z_R / w_0^2\right) w_0^2 \left(1 + \frac{z^2}{z_R^2}\right)} = \frac{p}{z_R \left(1 + \frac{z^2}{z_R^2}\right)}.
+        \]
+        Integrating both sides with respect to $z$ from the focus ($z=0$) gives:
+        \begin{equation}
+            \Delta\zeta(z) = p \int_{0}^{z} \frac{1}{z_R \left(1 + \frac{z'^2}{z_R^2}\right)} dz' = p \arctan\left(\frac{z}{z_R}\right).
+        \end{equation}
+        
+        Adding back the fundamental Gouy phase term $\zeta_0(z) = \arctan(z/z_R)$, the total phase shift $\zeta(z)$ accumulated by the Laguerre-Gaussian mode due to its localized spatial confinement is:
+        \begin{equation}
+            \resizebox{0.8\columnwidth}{!}{$
+                \zeta(z) = \Delta\zeta(z) + \arctan\left(\frac{z}{z_R}\right)
+                = (2p + |l| + 1)\arctan\left(\frac{z}{z_R}\right)
+            $}
+        \end{equation}
+        This complete phase factor confirms that higher-order spatial modes experience an accelerated phase advance as they pass through the focal volume, scaled directly by their radial ($p$) and azimuthal ($l$) complexity indices. Combining the polynomial modulation, the Gaussian envelope, and the angular momentum phase factor confirms that the $LG_p^l$ fields form a complete, exact orthonormal basis for paraxial fields.
+
+\end{resolucao}

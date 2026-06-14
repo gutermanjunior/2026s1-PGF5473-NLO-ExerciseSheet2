@@ -1,0 +1,121 @@
+% ============================================================================
+% ex3.tex
+% ============================================================================
+% Exercício individual da lista.
+% Este arquivo deve conter apenas o conteúdo do exercício e, quando desejado,
+% sua resolução. Não deve carregar pacotes nem redefinir configurações globais.
+%
+% Interface adotada neste exemplo:
+% - ambiente `exercicio` com identificador textual livre;
+% - ambiente `resolucao` para a solução;
+% - subseções internas apenas para organizar a exposição.
+% ============================================================================
+
+\begin{exercicio}[Problem 3 --- Hermite-Gaussian and Laguerre-Gaussian Transformation]
+Show that the transformation between Hermite-Gaussian modes and Laguerre-Gaussian modes is block-diagonal, i.e., that any Hermite-Gaussian mode of order $N$ is a superposition of Laguerre-Gaussian modes with the same order.
+\end{exercicio}
+
+% Para mudar o título, basta alterar o texto entre colchetes []
+% Ex: [Resolução] ou [Solution]
+
+
+
+\begin{resolucao}[Solution]
+
+    \paragraph*{Theoretical References}
+    The mode structures, orthonormal basis properties, and their associated Gouy phase shifts are detailed in \textbf{Chapter 3 of \authorlinkcite{Saleh}} (Sections 3.3 and 3.4). The transformation between these families mirrors the degeneracy of the two-dimensional isotropic quantum harmonic oscillator, as explored in \textbf{\authorlinkcite{Yariv}} (\textit{Quantum Electronics}).
+
+    To prove that the transformation matrix connecting the Hermite-Gaussian (HG) and Laguerre-Gaussian (LG) bases is block-diagonal, we must demonstrate that a mode from one basis can only project onto modes from the other basis if they share the exact same total mode order $N$. We will rigorously establish this using two complementary approaches: a physical argument based on free-space propagation invariance, and a mathematical argument based on polynomial isomorphism.
+
+    \subsection*{1. Definition of the Bases and the Total Mode Order ($N$)}
+
+        Both the HG and LG modes form complete, orthonormal basis sets that perfectly span the Hilbert space of paraxial solutions. At any transverse plane $z$, an arbitrary optical field can be expanded in either basis.
+    
+        \paragraph*{Hermite-Gaussian (HG) Modes:}
+        Separable in Cartesian coordinates $(x,y)$, the HG$_{n,m}$ mode is governed by Hermite polynomials. The total transverse mode order is defined as:
+        \[
+        N_{\text{HG}} = n + m, \quad n,m \in \{0, 1, 2, \dots\}.
+        \]
+        The total field incorporates a fundamental Gaussian envelope, the transverse polynomial modulation, and a longitudinal phase factor that includes the Gouy phase shift $\zeta(z) = \arctan(z/z_R)$:
+        \[
+        U_{n,m}^{\text{HG}}(x,y,z) = u_{n,m}^{\text{HG}}(x,y,z) \exp\left[ i k z - i(N_{\text{HG}} + 1)\zeta(z) \right],
+        \]
+        where $u_{n,m}^{\text{HG}}$ is a purely real amplitude function containing the Gaussian decay and the Hermite polynomials evaluated at the scaled coordinates $\sqrt{2}x/w(z)$ and $\sqrt{2}y/w(z)$.
+    
+        \paragraph*{Laguerre-Gaussian (LG) Modes:}
+        Separable in cylindrical coordinates $(\rho,\phi)$, the LG$_{p}^{l}$ mode is governed by associated Laguerre polynomials and a complex azimuthal phase $e^{-i l \phi}$. The total transverse mode order is defined as:
+        \[
+        N_{\text{LG}} = 2p + |l|, \quad p \in \{0, 1, 2, \dots\}, \quad l \in \mathbb{Z}.
+        \]
+        Similarly, its propagation is described by:
+        \[
+        U_{p,l}^{\text{LG}}(\rho,\phi,z) = u_{p,l}^{\text{LG}}(\rho,z) e^{-il\phi} \exp\left[ i k z - i(N_{\text{LG}} + 1)\zeta(z) \right].
+        \]
+
+    \subsection*{2. The Physical Argument: Dynamic Phase Invariance}
+
+        Because both basis sets are complete, we can express any specific Hermite-Gaussian mode of order $N_{\text{HG}}$ as a linear superposition of Laguerre-Gaussian modes. The expansion coefficients $c_{p,l}$ are calculated by the inner product (the overlap integral) evaluated across the entire transverse plane. 
+        
+        Let us assume this expansion at the beam waist ($z=0$), where $\zeta(0) = 0$:
+        \begin{equation}
+            U_{n,m}^{\text{HG}}(x,y,0) = \sum_{p=0}^{\infty} \sum_{l=-\infty}^{\infty} c_{p,l} \, U_{p,l}^{\text{LG}}(\rho,\phi,0).
+            \label{eq:expansion_z0}
+        \end{equation}
+        Because this is an exact mathematical identity between solutions of a linear differential equation (the paraxial wave equation), the equality must hold not only at $z=0$, but for all points $z$ along the propagation axis:
+        \begin{equation}
+            U_{n,m}^{\text{HG}}(x,y,z) = \sum_{p=0}^{\infty} \sum_{l=-\infty}^{\infty} c_{p,l} \, U_{p,l}^{\text{LG}}(\rho,\phi,z).
+            \label{eq:expansion_z}
+        \end{equation}
+        
+        Substituting the explicit phase dependencies into Eq.~\eqref{eq:expansion_z} and canceling the common plane-wave carrier $e^{ikz}$, we obtain:
+        \begin{equation}
+            \resizebox{0.8\columnwidth}{!}{%
+            $u_{n,m}^{\text{HG}} \, e^{-i(N_{\text{HG}} + 1)\zeta(z)} = \sum_{p,l} c_{p,l} \left[ u_{p,l}^{\text{LG}} e^{-il\phi} \right] e^{-i(N_{\text{LG}} + 1)\zeta(z)}.$%
+            }
+            \label{eq:phase_beating}
+        \end{equation}
+        We can isolate the HG amplitude by multiplying both sides by $e^{i(N_{\text{HG}} + 1)\zeta(z)}$:
+        \begin{equation}
+            \resizebox{0.85\columnwidth}{!}{%
+            $u_{n,m}^{\text{HG}}(x,y,z) = \sum_{p,l} c_{p,l} \left[ u_{p,l}^{\text{LG}}(\rho,z) e^{-il\phi} \right] \exp\left[ i (N_{\text{HG}} - N_{\text{LG}}) \zeta(z) \right]$%
+            }
+            \label{eq:phase_beating}
+        \end{equation}
+    
+        Eq.~\eqref{eq:phase_beating} reveals a strict physical constraint. The left-hand side is a purely real envelope function that maintains a constant transverse structural shape as it propagates. However, if the sum on the right-hand side contains any term where $N_{\text{LG}} \neq N_{\text{HG}}$, that specific term will acquire a $z$-dependent rotational phase oscillation of the form $\exp[\pm i \Delta N \zeta(z)]$. 
+        
+        If such terms existed, they would cause longitudinal beating and transverse spatial interference as $z$ increases, meaning the mode's intensity profile $|U^{\text{HG}}|^2$ would morph and change shape during propagation. Since HG modes are perfectly stable invariant modes of free space, no such beating can occur. 
+        
+        Therefore, to prevent $z$-dependent interference and satisfy Eq.~\eqref{eq:phase_beating} for all $z$, the complex phase factor must strictly vanish. This requires $N_{\text{HG}} - N_{\text{LG}} = 0$. Consequently, the expansion coefficients $c_{p,l}$ must be identically zero for all modes where $N_{\text{LG}} \neq N_{\text{HG}}$.
+
+    \subsection*{3. The Mathematical Argument: Polynomial Isomorphism}
+
+        To confirm this physical constraint algebraically, we analyze the spatial functional forms at the waist ($z=0$). We factor out the ubiquitous fundamental Gaussian envelope $\exp[-(\rho^2)/w_0^2]$ from both sides, leaving an identity solely between the transverse polynomials.
+    
+        \paragraph*{Cartesian Polynomial Degree ($N_{\text{HG}}$):}
+        The transverse structure of the HG$_{n,m}$ mode is proportional to the product of two Hermite polynomials of degrees $n$ and $m$:
+        \[
+        H_n\left(\frac{\sqrt{2}x}{w_0}\right) H_m\left(\frac{\sqrt{2}y}{w_0}\right).
+        \]
+        When expanded, this product generates a finite 2D Cartesian polynomial $P(x,y)$. The highest-order term is exactly $x^n y^m$, which possesses a combined total algebraic degree of $n + m = N_{\text{HG}}$.
+    
+        \paragraph*{Polar to Cartesian Mapping ($N_{\text{LG}}$):}
+        The transverse structure of the LG$_{p}^{l}$ mode (omitting the Gaussian part) is:
+        \[
+        \rho^{|l|} L_p^{|l|}\left(\frac{2\rho^2}{w_0^2}\right) e^{-i l \phi}.
+        \]
+        We must express this in Cartesian coordinates to compare it with the HG polynomial. 
+        First, note that the azimuthal term combined with the radial factor forms a homogeneous Cartesian polynomial. For $l \ge 0$, $\rho^l e^{-il\phi} = (x - iy)^l$, which is a polynomial in $x$ and $y$ of exact degree $|l|$. 
+        Second, the associated Laguerre polynomial $L_p^{|l|}(2\rho^2/w_0^2)$ is a polynomial of degree $p$ in its argument. Since its argument is proportional to $\rho^2 = x^2 + y^2$, the Laguerre polynomial expands into terms up to $(x^2+y^2)^p$, which is a Cartesian polynomial of exact degree $2p$.
+        
+        Multiplying the degree-$|l|$ term by the degree-$2p$ term, we conclude that any LG mode corresponds to a 2D Cartesian polynomial of exact maximum degree:
+        \[
+        2p + |l| = N_{\text{LG}}.
+        \]
+
+    \paragraph*{Conclusion:}
+    The coordinate transformation $(x,y) \leftrightarrow (\rho,\phi)$ is purely linear and preserves polynomial degrees. By the fundamental theorem of algebra for multivariable polynomials, a polynomial of strict maximum degree $N$ can only be constructed by a linear combination of other polynomials of maximum degree $N$ or lower. Furthermore, matching the parity properties of both bases prevents mixing with lower degrees. 
+    
+    Consequently, the HG space of order $N$ and the LG space of order $N$ span the exact same finite-dimensional subspace of solutions. The inner product matrix $M_{i,j} = \langle LG_i | HG_j \rangle$ linking the bases consists entirely of zeros whenever $N_{\text{HG}} \neq N_{\text{LG}}$. When sorted by the mode order $N$, the non-zero terms are strictly confined to isolated square blocks along the diagonal, completing the proof that the transformation is \textbf{block-diagonal}.
+
+\end{resolucao}

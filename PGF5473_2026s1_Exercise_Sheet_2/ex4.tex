@@ -1,0 +1,167 @@
+% ============================================================================
+% ex4.tex
+% ============================================================================
+% Exercício individual da lista.
+% Este arquivo deve conter apenas o conteúdo do exercício e, quando desejado,
+% sua resolução. Não deve carregar pacotes nem redefinir configurações globais.
+%
+% Interface adotada neste exemplo:
+% - ambiente `exercicio` com identificador textual livre;
+% - ambiente `resolucao` para a solução;
+% - subseções internas apenas para organizar a exposição.
+% ============================================================================
+
+\begin{exercicio}[Problem 4 --- Resonance Frequencies of an Optical Resonator]
+Consider an optical resonator with length $L$ and mirrors of curvature radii $R_{1}$ and $R_{2}$.
+
+\begin{enumerate}[a)]
+    \item Show that the resonance frequencies are given by:
+    \[
+    \nu_{mnq} = \frac{c}{2L} \left[ q + \frac{1}{\pi} (m+n+1) \arccos\left(\pm\sqrt{g_{1}g_{2}}\right) \right],
+    \]
+    where $g_{j} = 1 - L/R_{j}$ for $j=1,2$.
+    \item Discuss how the resonance frequencies of different spatial modes are separated according to the cavity geometry.
+\end{enumerate}
+\end{exercicio}
+
+\begin{resolucao}[Solution]
+
+    \paragraph*{Theoretical References}
+    The boundary conditions for stable paraxial resonators and the ensuing discretization of the resonance frequencies are rigorously treated in \textbf{Chapter 10 of \authorlinkcite{Saleh}} (\textit{Resonator Optics}, specifically Section 10.2: \textit{Spherical-Mirror Resonators}). 
+
+    \subsection*{(a) Derivation of the Resonance Frequencies}
+
+        \paragraph*{Step 1: The Longitudinal Phase Condition}
+            For an electromagnetic field to form a stable standing wave inside an optical cavity, it must reproduce itself completely after one full round trip. This implies that the total phase accumulated over a round trip of length $2L$ must be an integer multiple of $2\pi$. Equivalently, the phase accumulated in a single pass of length $L$ must be an integer multiple of $\pi$.
+        
+            As demonstrated in previous exercises, the phase of a Hermite-Gaussian mode $\text{HG}_{n,m}$ propagating along the $z$-axis is given by:
+            \begin{equation}
+                \Phi(x, y, z) = kz - (m+n+1)\zeta(z) + \frac{k(x^2+y^2)}{2R(z)}.
+                \label{eq:total_phase}
+            \end{equation}
+            Evaluating this field strictly along the optical axis ($x=y=0$), the phase shift accumulated between the two mirrors located at $z_1$ and $z_2$ (where $L = z_2 - z_1$) is:
+            \begin{equation}
+                \Delta \Phi = kL - (m+n+1)\left[\zeta(z_2) - \zeta(z_1)\right].
+            \end{equation}
+            Setting this single-pass phase shift to $q\pi$ (where $q = 1, 2, 3 \dots$ is the longitudinal mode integer) and expressing the wavevector as $k = 2\pi\nu/c$, we obtain:
+            \begin{equation}
+                \frac{2\pi\nu L}{c} - (m+n+1)\Delta\zeta = q\pi,
+                \label{eq:phase_resonance}
+            \end{equation}
+            where $\Delta\zeta = \zeta(z_2) - \zeta(z_1)$. Isolating the frequency $\nu$ yields the generalized resonance equation:
+            \begin{equation}
+                \nu_{mnq} = \frac{c}{2L} \left[ q + \frac{1}{\pi}(m+n+1)\Delta\zeta \right].
+                \label{eq:nu_general}
+            \end{equation}
+            Our remaining task is to express the relative Gouy phase shift $\Delta\zeta$ exclusively in terms of the dimensionless cavity geometry parameters $g_1$ and $g_2$.
+    
+        \paragraph*{Step 2: Boundary Conditions and $g$-parameters}
+            The generalized cavity parameters are defined as $g_1 = 1 - L/R_1$ and $g_2 = 1 - L/R_2$. To ensure spatial self-consistency, the wavefront curvature of the Gaussian beam must perfectly match the curvature of the mirrors at their respective physical positions.
+            
+            Adopting the standard sign convention where $R_1$ and $R_2$ are positive for concave mirrors facing inward:
+            \begin{align}
+                R(z_1) &= z_1 + \frac{z_R^2}{z_1} = -R_1, \\
+                R(z_2) &= z_2 + \frac{z_R^2}{z_2} = R_2,
+            \end{align}
+            which allows us to re-express the mirror radii as:
+            \begin{equation}
+                -R_1 z_1 = z_1^2 + z_R^2 \quad \text{and} \quad R_2 z_2 = z_2^2 + z_R^2.
+                \label{eq:radii_conditions}
+            \end{equation}
+    
+        \paragraph*{Step 3: Evaluating the Gouy Phase Shift}
+            By definition, the Gouy phase is $\zeta(z) = \arctan(z/z_R)$. We evaluate the cosine of the total shift $\Delta\zeta$:
+            \begin{equation}
+                \cos(\Delta\zeta) = \cos(\arctan(z_2/z_R) - \arctan(z_1/z_R)).
+            \end{equation}
+            Using the trigonometric identity $\cos(\arctan A - \arctan B) = \frac{1 + AB}{\sqrt{1+A^2}\sqrt{1+B^2}}$, we map this directly to the spatial coordinates:
+            \begin{equation}
+                \cos(\Delta\zeta) = \frac{1 + \frac{z_1 z_2}{z_R^2}}{\sqrt{1 + \frac{z_1^2}{z_R^2}}\sqrt{1 + \frac{z_2^2}{z_R^2}}} = \frac{z_R^2 + z_1 z_2}{\sqrt{z_R^2 + z_1^2}\sqrt{z_R^2 + z_2^2}}.
+                \label{eq:cos_delta_zeta}
+            \end{equation}
+            Substituting the boundary relations \eqref{eq:radii_conditions} into the denominator yields:
+            \begin{equation}
+                \text{Denominator} = \sqrt{-R_1 z_1} \sqrt{R_2 z_2}.
+            \end{equation}
+            The focal coordinates $(z_1, z_2)$ and the Rayleigh range $z_R$ are linked to the $g$-parameters by the fundamental cavity sizing equations:
+            \begin{equation}
+                \begin{aligned}
+                    z_1 &= \frac{-L g_2(1-g_1)}
+                                 {g_1+g_2-2g_1g_2},
+                    \\
+                    z_2 &= \frac{L g_1(1-g_2)}
+                                 {g_1+g_2-2g_1g_2},
+                    \\
+                    z_R^2 &= \frac{L^2 g_1 g_2(1-g_1g_2)}
+                                   {(g_1+g_2-2g_1g_2)^2}.
+                \end{aligned}
+            \end{equation}
+            Substituting these coordinates into the numerator $(z_R^2 + z_1 z_2)$:
+            \begin{align*}
+                \text{Numerator} &= \frac{L^2}{(g_1+g_2-2g_1g_2)^2} \\
+                & \quad \times \Big[ g_1g_2(1-g_1g_2) - g_1g_2(1-g_1)(1-g_2) \Big] \\
+                &= \frac{L^2 g_1 g_2}{(g_1+g_2-2g_1g_2)^2} \\
+                & \quad \times \Big[ 1 - g_1g_2 - (1 - g_1 - g_2 + g_1g_2) \Big] \\
+                &= \frac{L^2 g_1 g_2}{g_1+g_2-2g_1g_2}.
+            \end{align*}
+            Likewise, evaluating the squared denominator $(-R_1 z_1)(R_2 z_2)$ by remembering that $R_1 = L/(1-g_1)$ and $R_2 = L/(1-g_2)$:
+            \begin{align*}
+                \text{Denominator}^2 &= \left( \frac{L}{1-g_1} z_1 \right) \left( - \frac{L}{1-g_2} z_2 \right) \\
+                &= \frac{-L^2 z_1 z_2}{(1-g_1)(1-g_2)} \\
+                &= \frac{L^4 g_1 g_2}{(g_1+g_2-2g_1g_2)^2}.
+            \end{align*}
+            Taking the square root gives $\text{Denominator} = \frac{L^2 \sqrt{g_1 g_2}}{g_1+g_2-2g_1g_2}$. 
+            Dividing the Numerator by the Denominator, we find a remarkably simple analytical result:
+            \begin{equation}
+                \cos(\Delta\zeta) = \frac{L^2 g_1 g_2}{L^2 \sqrt{g_1 g_2}} = \pm \sqrt{g_1 g_2}.
+            \end{equation}
+            The sign ($\pm$) accounts for the different possible physical branches depending on whether the beam waist resides inside or outside the region between the mirrors. Inverting the cosine gives the total relative Gouy phase shift:
+            \begin{equation}
+                \Delta\zeta = \arccos\left(\pm\sqrt{g_1 g_2}\right).
+                \label{eq:delta_zeta_final}
+            \end{equation}
+    
+        \paragraph*{Step 4: Final Expression}
+            Substituting Eq.~\eqref{eq:delta_zeta_final} back into Eq.~\eqref{eq:nu_general}, we secure the final expression for the resonance frequencies of the optical resonator:
+            \begin{equation}
+                \nu_{mnq} = \frac{c}{2L} \left[ q + \frac{1}{\pi}(m+n+1) \arccos\left(\pm\sqrt{g_1 g_2}\right) \right],
+            \end{equation}
+            which concludes the proof.
+
+    \vspace{0.5cm}
+    \subsection*{(b) Separation of Spatial Modes}
+    
+        The resonance equation derived in Part (a) can be rewritten in terms of the Free Spectral Range (FSR), defined as $\nu_{\mathrm{FSR}} = c/2L$, and the total transverse mode order $N = m+n$:
+        \begin{equation}
+            \nu_{N,q} = \nu_{\mathrm{FSR}} \left[ q + (N+1)\frac{\Delta\zeta}{\pi} \right],
+        \end{equation}
+        where $\Delta\zeta = \arccos\left(\pm\sqrt{g_1 g_2}\right)$ is the relative Gouy phase shift between the two mirrors. This formulation reveals several key physical properties regarding how spatial modes are separated in the frequency domain:
+    
+        \paragraph*{1. Longitudinal vs. Transverse Spacing}
+            If we maintain the same spatial mode structure (fixed $N$) and increment the longitudinal index $q$, the resonance frequencies are strictly separated by exactly one FSR ($\Delta\nu_{\mathrm{long}} = c/2L$). 
+            
+            However, if we fix the longitudinal mode $q$ and change the spatial mode profile (incrementing $N$), the frequency separation between adjacent transverse modes is given by a fraction of the FSR:
+            \begin{equation}
+                \Delta\nu_{\mathrm{trans}} = \nu_{\mathrm{FSR}} \left( \frac{\Delta\zeta}{\pi} \right) = \frac{c}{2L} \frac{\arccos\left(\pm\sqrt{g_1 g_2}\right)}{\pi}.
+            \end{equation}
+            This shows that the cavity geometry—dictated entirely by $g_1$ and $g_2$—controls the precise spectral spacing of the spatial modes.
+    
+        \paragraph*{2. Intrinsic Degeneracies}
+            Because the frequency depends only on the sum $N = m+n$, any two Hermite-Gaussian modes sharing the same total order (e.g., $\text{HG}_{0,1}$ and $\text{HG}_{1,0}$) will possess the exact same resonance frequency, regardless of the cavity geometry. They are intrinsically degenerate because they accumulate the exact same Gouy phase shift per round trip.
+        
+        \paragraph*{3. Limiting Geometry Cases}
+            The term $\arccos(\dots)/\pi$ acts as a tuning knob ranging from $0$ to $1$, bounded by the stability condition $0 \le g_1 g_2 \le 1$. Let us examine three classic cavity configurations:
+            
+            \begin{itemize}
+                \item \textbf{Planar Cavity ($R_1 = R_2 = \infty \implies g_1=g_2=1$):}\\
+                Here, $\arccos(1) = 0$. Therefore, $\Delta\nu_{\mathrm{trans}} = 0$. All transverse modes are completely degenerate and resonate at the exact same frequencies as the longitudinal modes. (Note: strictly planar cavities are marginally stable and highly susceptible to diffraction losses).
+                
+                \item \textbf{Confocal Cavity ($R_1 = R_2 = L \implies g_1=g_2=0$):}\\
+                Here, $\arccos(0) = \pi/2$. The transverse spacing becomes exactly $\Delta\nu_{\mathrm{trans}} = \nu_{\mathrm{FSR}}/2$. As a result, the higher-order spatial modes interleave perfectly halfway between the fundamental longitudinal resonances. Furthermore, modes where $N$ changes by 2 and $q$ changes by 1 become perfectly degenerate (e.g., the $N=2, q$ mode resonates at the exact same frequency as the $N=0, q+1$ mode).
+                
+                \item \textbf{Concentric Cavity ($R_1 = R_2 = L/2 \implies g_1=g_2=-1$):}\\
+                Taking the negative root branch for concave mirrors beyond the confocal point, $\arccos(-1) = \pi$. The transverse spacing becomes $\Delta\nu_{\mathrm{trans}} = \nu_{\mathrm{FSR}}$. The spatial modes shift by exactly one full Free Spectral Range, piling up precisely on top of the next longitudinal mode, recreating a macroscopic degeneracy similar to the planar case.
+            \end{itemize}
+        
+            In summary, by deliberately selecting the mirror curvatures $R_1$ and $R_2$ relative to the cavity length $L$, one can engineer the Gouy phase shift to either isolate specific spatial modes for filtering purposes or intentionally group them together to increase the resonant bandwidth.
+\end{resolucao}

@@ -1,0 +1,143 @@
+% ============================================================================
+% ex5.tex
+% ============================================================================
+% Exercício individual da lista.
+% Este arquivo deve conter apenas o conteúdo do exercício e, quando desejado,
+% sua resolução. Não deve carregar pacotes nem redefinir configurações globais.
+%
+% Interface adotada neste exemplo:
+% - ambiente `exercicio` com identificador textual livre;
+% - ambiente `resolucao` para a solução;
+% - subseções internas apenas para organizar a exposição.
+% ============================================================================
+
+% \begin{exercicio}[Problem 5 --- Doubly-Resonant Optical Parametric Oscillator]
+% Derive the dynamical equations for a doubly-resonant optical parametric oscillator, i.e., an OPO whose cavity is completely transparent for the pump beam. Discuss the solution for the OPO in this case and compare the threshold pump power with the triply resonant case.
+% \end{exercicio}
+
+\begin{exercicio}[Problem 5 --- Doubly-Resonant Optical Parametric Oscillator]
+    An optical parametric oscillator (OPO) can exhibit distinct dynamical behaviors depending on its cavity configuration.
+    
+    \begin{enumerate}[a)]
+        \item Derive the dynamical equations for a doubly-resonant optical parametric oscillator, i.e., an OPO whose cavity is completely transparent for the pump beam.
+        \item Discuss the solution for the OPO in this case and compare the threshold pump power with the triply resonant case.
+    \end{enumerate}
+\end{exercicio}
+
+
+\begin{resolucao}[Solution]
+
+    \paragraph*{Theoretical References}
+    The formal treatment of parametric interactions inside optical cavities and the derivation of oscillation thresholds are primarily based on \textbf{Section 2.10 of \authorlinkcite{Boyd}} (\textit{The Optical Parametric Oscillator}, 4th edition). The cavity boundary conditions and mean-field approximations are supplemented by the resonator scaling laws in \textbf{Chapter 10 of \authorlinkcite{Saleh}}.
+
+    \subsection*{1. Derivation of the Dynamical Equations for a DRO}
+
+    In a Doubly-Resonant Optical Parametric Oscillator (DRO), the optical cavity is engineered to provide feedback exclusively for the generated signal ($\omega_s$) and idler ($\omega_i$) fields. The mirrors are coated to be highly reflective at $\omega_s$ and $\omega_i$, but completely anti-reflective (transparent) at the pump frequency $\omega_p = \omega_s + \omega_i$. Consequently, the pump field performs a single pass through the nonlinear crystal without any cavity enhancement.
+
+    \paragraph*{1.1. Local Coupled-Wave Equations}
+    Inside the macroscopic nonlinear medium of length $L$, the spatial evolution of the slowly varying complex amplitudes ($A_j$) is governed by the standard second-order coupled-wave equations. Assuming perfect phase-matching ($\Delta k = 0$) and the Slowly Varying Envelope Approximation (SVEA), the differential generation across an infinitesimal slice $dz$ is:
+    \begin{align}
+        \frac{dA_s}{dz} &= i \kappa_s A_p A_i^*, \label{eq:local_s} \\
+        \frac{dA_i}{dz} &= i \kappa_i A_p A_s^*, \label{eq:local_i} \\
+        \frac{dA_p}{dz} &= i \kappa_p A_s A_i, \label{eq:local_p}
+    \end{align}
+    where $\kappa_j = \frac{8\pi i \omega_j^2 d_{\mathrm{eff}}}{k_j c^2}$ acts as the nonlinear coupling strength for each respective wave.
+
+    \paragraph*{1.2. The Round-Trip Model and Mean-Field Approximation}
+    To describe the dynamics of the OPO as an open oscillator system, we must transition from the spatial propagation coordinate $z$ to a macroscopic time coordinate $t$. Let $\tau_{\mathrm{rt}} = L_c/c$ be the cavity round-trip time, where $L_c$ is the optical path length of the resonator.
+
+    During a single round trip, the signal amplitude changes due to two competing effects: 
+    1) \textbf{Parametric Gain:} The field grows as it traverses the crystal of length $L$.
+    2) \textbf{Cavity Losses:} The field is attenuated by mirror transmission, scattering, and absorption, lumped into a fractional power loss coefficient $\gamma_s$ (meaning the amplitude is reduced by roughly $\gamma_s/2$, but for small losses, we use a linearized amplitude loss rate which we simply denote as $\gamma_s$).
+
+    We can write a discrete-time difference equation for the signal amplitude after one round trip:
+    \begin{equation}
+        A_s(t + \tau_{\mathrm{rt}}) - A_s(t) = -\gamma_s A_s(t) + \int_{0}^{L} \frac{dA_s}{dz} dz.
+        \label{eq:discrete_step}
+    \end{equation}
+    
+    Assuming the per-pass gain and losses are small (the \textit{mean-field limit}), the amplitudes $A_p$ and $A_i$ remain approximately constant over the short integration length $L$. Thus, the integral evaluates to a simple lumped gain: $\int_{0}^{L} \frac{dA_s}{dz} dz \approx i \kappa_s L A_p A_i^*$. 
+    
+    By dividing Eq.~\eqref{eq:discrete_step} by $\tau_{\mathrm{rt}}$ and taking the continuous-time limit ($\tau_{\mathrm{rt}} \to dt$), we obtain the **macroscopic dynamical equations** for the doubly-resonant fields:
+    \begin{align}
+        \tau_{\mathrm{rt}} \frac{dA_s}{dt} &= -\gamma_s A_s + i g A_p A_i^*, \label{eq:dro_dyn_s} \\
+        \tau_{\mathrm{rt}} \frac{dA_i}{dt} &= -\gamma_i A_i + i g A_p A_s^*, \label{eq:dro_dyn_i}
+    \end{align}
+    where $g = \sqrt{\kappa_s \kappa_i} L$ is the effective lumped single-pass nonlinear gain coefficient. Crucially, because the pump is non-resonant and makes only a single pass, $A_p$ represents the external, undepleted input pump amplitude injected into the system: $A_p = A_p^{\mathrm{in}}$.
+
+    \subsection*{2. Steady-State Solution and Oscillation Threshold}
+
+    To determine the threshold pump power required to initiate parametric oscillation, we seek the steady-state conditions where the macroscopic fields remain constant in time ($ \frac{dA_s}{dt} = \frac{dA_i}{dt} = 0 $). This represents the critical point where the nonlinear gain exactly counterbalances the cavity losses.
+
+    Setting the derivatives in Eqs.~\eqref{eq:dro_dyn_s} and \eqref{eq:dro_dyn_i} to zero yields a system of homogeneous linear algebraic equations:
+    \begin{align}
+        \gamma_s A_s &= i g A_p^{\mathrm{in}} A_i^*, \label{eq:steady_s} \\
+        \gamma_i A_i &= i g A_p^{\mathrm{in}} A_s^*. \label{eq:steady_i}
+    \end{align}
+    
+    To decouple the system, we take the complex conjugate of Eq.~\eqref{eq:steady_i}:
+    \begin{equation}
+        \gamma_i A_i^* = -i g^* (A_p^{\mathrm{in}})^* A_s \implies A_i^* = \frac{-i g^* (A_p^{\mathrm{in}})^* A_s}{\gamma_i}.
+    \end{equation}
+    Substituting this expression for $A_i^*$ back into Eq.~\eqref{eq:steady_s}:
+    \begin{equation}
+        \gamma_s A_s = i g A_p^{\mathrm{in}} \left[ \frac{-i g^* (A_p^{\mathrm{in}})^* A_s}{\gamma_i} \right].
+    \end{equation}
+    Simplifying the right-hand side using the property that $i(-i) = 1$ and $g g^* = |g|^2$:
+    \begin{equation}
+        \gamma_s A_s = \frac{|g|^2 |A_p^{\mathrm{in}}|^2}{\gamma_i} A_s \implies \left( \gamma_s \gamma_i - |g|^2 |A_p^{\mathrm{in}}|^2 \right) A_s = 0.
+    \end{equation}
+
+    For a stable optical oscillation to exist, we must have non-trivial fields ($A_s \neq 0$). Therefore, the term inside the parentheses must vanish. This establishes the strict condition for the **DRO threshold pump intensity**:
+    \begin{equation}
+        |A_p^{\mathrm{in}}|^2_{\mathrm{DRO}} = \frac{\gamma_s \gamma_i}{|g|^2}.
+    \end{equation}
+    Since the measurable optical power $P$ is directly proportional to the squared field amplitude $|A|^2$, the threshold pump power for the doubly-resonant operation takes the compact analytical form:
+    \begin{equation}
+        \boxed{P_{\mathrm{th}}^{\mathrm{DRO}} = \frac{\gamma_s \gamma_i}{|g|^2}}.
+        \label{eq:threshold_dro}
+    \end{equation}
+
+    \subsection*{3. Comparison: Doubly-Resonant vs. Triply-Resonant OPO}
+
+    In a Triply-Resonant Optical Parametric Oscillator (TRO), the cavity mirrors are highly reflective for all three interacting wavelengths ($\omega_p, \omega_s, \omega_i$). This introduces a profound change in the boundary conditions for the pump wave.
+
+    \paragraph*{Pump Field Enhancement in a TRO:}
+    Because the pump beam resonates inside the Fabry-Pérot cavity, the internal pump field $A_p^{\mathrm{int}}$ driving the crystal is no longer equal to the input field. It builds up constructively due to multiple reflections. Near threshold, the internal field relates to the external field via the cavity finesse enhancement factor:
+    \begin{equation}
+        A_p^{\mathrm{int}} \approx \frac{2}{\gamma_p} A_p^{\mathrm{in}},
+    \end{equation}
+    where $\gamma_p$ is the round-trip fractional power loss for the pump mode.
+
+    The fundamental physics of the parametric interaction inside the crystal does not change; the local gain required to overcome the signal and idler losses remains identically $|g|^2 |A_p^{\mathrm{int}}|^2 = \gamma_s \gamma_i$. However, substituting the enhanced internal pump field into this threshold condition yields:
+    \begin{equation}
+        |g|^2 \left( \frac{4}{\gamma_p^2} |A_p^{\mathrm{in}}|^2_{\mathrm{TRO}} \right) = \gamma_s \gamma_i \implies \boxed{P_{\mathrm{th}}^{\mathrm{TRO}} = \frac{\gamma_s \gamma_i \gamma_p^2}{4 |g|^2}}.
+    \end{equation}
+
+    \paragraph*{Direct Comparison Matrix:}
+    Taking the ratio of the two threshold operational powers clearly highlights the difference:
+    \begin{equation}
+        \frac{P_{\mathrm{th}}^{\mathrm{DRO}}}{P_{\mathrm{th}}^{\mathrm{TRO}}} = \frac{4}{\gamma_p^2}.
+    \end{equation}
+    For a well-designed, low-loss cavity, the pump round-trip losses might be around $2\%$ ($\gamma_p = 0.02$). Applying this value to the ratio:
+    \[
+    \frac{P_{\mathrm{th}}^{\mathrm{DRO}}}{P_{\mathrm{th}}^{\mathrm{TRO}}} \approx \frac{4}{(0.02)^2} = \frac{4}{0.0004} = 10,000.
+    \]
+    This analytical limit demonstrates that **a DRO requires pump powers typically three to four orders of magnitude higher than a TRO** to reach the oscillation threshold.
+
+    \subsection*{4. Practical Laboratory Implications (Preparatory Notes for Exercise 6)}
+
+    Despite the fact that a DRO requires significantly higher pump power (often demanding powerful continuous-wave lasers), it is the preferred architecture in most modern quantum optics laboratories. The mathematical conclusions derived above dictate directly what must be observed and managed on the optical bench:
+
+    \begin{itemize}
+        \item \textbf{The Cluster Hopping Phenomenon (Why DROs beat TROs):} 
+        For a TRO to oscillate stably, the cavity length $L_c$ must be controlled to sub-nanometer precision to satisfy the longitudinal resonance conditions simultaneously for three different wavelengths: $L_c = q_p \lambda_p / 2$, $L_c = q_s \lambda_s / 2$, and $L_c = q_i \lambda_i / 2$. This creates a strict "Vernier-like" coincidence requirement. Minor thermal drifts or acoustic vibrations immediately break this triple-resonance, causing the OPO to violently jump between different combinations of modes (cluster hopping) or shut down entirely. A DRO operates stably precisely because we discard the $\lambda_p$ resonance constraint, drastically increasing the thermal and mechanical stability of the emission.
+
+        \item \textbf{Macroscopic Signature: Pump Depletion (Clamping):} 
+        When analyzing the transmitted pump beam on an oscilloscope, you will observe the threshold transition visually. Below $P_{\mathrm{th}}$, the system acts linearly; the transmitted pump power increases linearly with the input power. The exact moment $P_{\mathrm{in}}$ crosses $P_{\mathrm{th}}$, the macroscopic generation of $\omega_s$ and $\omega_i$ begins. These strong generated fields then drive the nonlinear polarization in reverse (difference-frequency generation back into the pump), effectively "clamping" the circulating pump power exactly at the threshold value. Any additional input pump power beyond threshold is converted entirely into the signal and idler beams, appearing as a sudden flattening (depletion) in the pump transmission curve.
+
+        \item \textbf{Mode Matching and the Geometric Penalty:} 
+        In Eq.~\eqref{eq:threshold_dro}, the coupling coefficient $g$ implicitly contains the spatial overlap integral between the Gaussian modes of the pump, signal, and idler fields (as explored in Exercise 1). If the external pump beam is poorly coupled into the fundamental TEM$_{00}$ mode of the cavity using the alignment lenses, the effective $|g|^2$ drops precipitously. Because the DRO threshold is already inherently high, poor spatial mode matching can push $P_{\mathrm{th}}^{\mathrm{DRO}}$ beyond the maximum output power of the available laser, preventing the cavity from ever oscillating.
+    \end{itemize}
+
+\end{resolucao}
