@@ -1,0 +1,548 @@
+% ============================================================================
+% ex3.tex
+% ============================================================================
+% Exercício individual da lista.
+% Este arquivo deve conter apenas o conteúdo do exercício e, quando desejado,
+% sua resolução. Não deve carregar pacotes nem redefinir configurações globais.
+%
+% Interface adotada neste exemplo:
+% - ambiente "exercicio" com identificador textual livre;
+% - ambiente "resolucao" para a solução;
+% - subseções internas apenas para organizar a exposição.
+% ============================================================================
+
+\begin{exercicio}[Problem 3 --- Hermite-Gaussian and Laguerre-Gaussian Transformation]
+Show that the transformation between Hermite-Gaussian modes and Laguerre-Gaussian modes is block-diagonal, i.e., that any Hermite-Gaussian mode of order $N$ is a superposition of Laguerre-Gaussian modes with the same order.
+\end{exercicio}
+
+% Para mudar o título, basta alterar o texto entre colchetes []
+% Ex: [Resolução] ou [Solution]
+
+\begin{resolucao}[Solution]
+
+To prove that the transformation matrix connecting the Hermite-Gaussian (HG) and Laguerre-Gaussian (LG) bases is block-diagonal, we must demonstrate that a mode from one basis can only project onto modes from the other basis if both modes share the same total transverse order $N$.
+
+The relevant mathematical structure comes from \textbf{Chapter 3 of \authorlinkcite{Saleh}}, especially Sections~3.3 and~3.4. In Sec.~3.3, Saleh and Teich derive the Hermite-Gaussian modes by separating the paraxial Helmholtz equation in Cartesian coordinates. Their Eq.~(3.3-10) gives the complex amplitude of the HG mode, and Eq.~(3.3-9) gives the excess Gouy phase proportional to the sum of the two Cartesian indices. In Sec.~3.4, they state that the Laguerre-Gaussian modes are obtained by writing the same paraxial Helmholtz equation in cylindrical coordinates and separating the variables $\rho$ and $\phi$; their Eq.~(3.4-1) gives the complex amplitude of the LG mode. The same structure also appears in \textbf{\authorlinkcite{Yariv}}, Sec.~6.9, Eq.~(6.9-1), where high-order Gaussian modes in homogeneous media carry a Gouy phase proportional to the total transverse order plus one.
+
+Therefore, the proof below is based on two equivalent facts:
+\begin{enumerate}
+\item HG and LG modes solve the same paraxial wave equation, but in different transverse coordinate systems.
+\item Both families acquire a Gouy phase determined only by the same total transverse order $N$.
+\end{enumerate}
+
+\subsection*{1. Definition of the Bases and the Total Mode Order}
+
+```
+Both the HG and LG modes form complete orthogonal basis sets for paraxial optical fields. Saleh and Teich state this explicitly at the beginning of Sec.~3.4: the Hermite-Gaussian beams form a complete set of solutions of the paraxial Helmholtz equation, and the Laguerre-Gaussian beams form an alternate complete set obtained in cylindrical coordinates.
+
+\paragraph*{Hermite-Gaussian Modes}
+The Hermite-Gaussian modes are separable in Cartesian coordinates $(x,y)$. In Saleh and Teich's notation, Eq.~(3.3-10) gives the complex amplitude of a mode labeled by two non-negative integers. In the notation used here, these indices are denoted by $(n,m)$:
+\begin{equation}
+    HG_{n,m},
+    \qquad
+    n,m=0,1,2,\ldots.
+\end{equation}
+The corresponding total transverse order is
+\begin{equation}
+    N_{\mathrm{HG}}=n+m.
+    \label{eq:NHG_definition}
+\end{equation}
+
+Using the usual notation
+\[
+    W(z)\to w(z),
+    \qquad
+    C(z)\to \zeta(z),
+    \qquad
+    z_0\to z_R,
+\]
+and suppressing normalization constants, the Hermite-Gaussian field may be written as
+\begin{equation}
+    \begin{aligned}
+    U_{n,m}^{\mathrm{HG}}(x,y,z)
+    &\propto
+    \frac{w_0}{w(z)}
+    H_n\left(\frac{\sqrt{2}x}{w(z)}\right)
+    H_m\left(\frac{\sqrt{2}y}{w(z)}\right)
+    \exp\left[-\frac{x^2+y^2}{w^2(z)}\right]
+    \\[3pt]
+    &\quad\times
+    \exp\left[-i\frac{k(x^2+y^2)}{2R(z)}\right]
+    \exp\left[ikz\right]
+    \exp\left[-i(n+m+1)\zeta(z)\right].
+    \end{aligned}
+    \label{eq:HG_mode_form}
+\end{equation}
+This expression is the same content as Saleh and Teich's Eq.~(3.3-10), up to the sign convention used for the carrier phase. The important point for this exercise is the Gouy phase:
+\begin{equation}
+    \Phi_{\mathrm{Gouy}}^{\mathrm{HG}}(z)
+    =
+    (n+m+1)\zeta(z)
+    =
+    (N_{\mathrm{HG}}+1)\zeta(z).
+    \label{eq:HG_gouy_order}
+\end{equation}
+This follows directly from Saleh and Teich's Eq.~(3.3-9), where the excess phase is proportional to the sum of the two Cartesian indices.
+
+\paragraph*{Laguerre-Gaussian Modes}
+The Laguerre-Gaussian modes are separable in cylindrical coordinates $(\rho,\phi)$. In Saleh and Teich's notation, Eq.~(3.4-1) writes the LG mode with an azimuthal index and a radial index. In this solution, I use the standard notation
+\begin{equation}
+    LG_p^l,
+    \qquad
+    p=0,1,2,\ldots,
+    \qquad
+    l\in\mathbb{Z},
+\end{equation}
+where $p$ is the radial index and $l$ is the signed azimuthal, or topological, index. Since Saleh and Teich write the azimuthal index as a non-negative integer, their azimuthal index corresponds here to $|l|$.
+
+The total transverse order of an LG mode is
+\begin{equation}
+    N_{\mathrm{LG}}=2p+|l|.
+    \label{eq:NLG_definition}
+\end{equation}
+Again suppressing normalization constants, the corresponding field may be written as
+\begin{equation}
+    \begin{aligned}
+    U_{p,l}^{\mathrm{LG}}(\rho,\phi,z)
+    &\propto
+    \frac{w_0}{w(z)}
+    \left(
+        \frac{\sqrt{2}\rho}{w(z)}
+    \right)^{|l|}
+    L_p^{|l|}
+    \left(
+        \frac{2\rho^2}{w^2(z)}
+    \right)
+    \exp\left[-\frac{\rho^2}{w^2(z)}\right]
+    \\[3pt]
+    &\quad\times
+    \exp\left[-i\frac{k\rho^2}{2R(z)}\right]
+    \exp(ikz)
+    \exp\left[-i(2p+|l|+1)\zeta(z)\right]
+    \exp(-il\phi).
+    \end{aligned}
+    \label{eq:LG_mode_form}
+\end{equation}
+This is the same mode structure as Saleh and Teich's Eq.~(3.4-1), rewritten with signed azimuthal index $l$. Saleh and Teich explicitly emphasize, after Eq.~(3.4-1), that the phase behavior of the LG beam has the same Gaussian-beam dependence as Eq.~(3.1-7), except that the Gouy phase is enhanced by the factor
+\[
+    |l|+2p+1.
+\]
+Hence
+\begin{equation}
+    \Phi_{\mathrm{Gouy}}^{\mathrm{LG}}(z)
+    =
+    (2p+|l|+1)\zeta(z)
+    =
+    (N_{\mathrm{LG}}+1)\zeta(z).
+    \label{eq:LG_gouy_order}
+\end{equation}
+
+The key comparison is therefore
+\begin{equation}
+    \boxed{
+    \Phi_{\mathrm{Gouy}}^{\mathrm{HG}}=(N_{\mathrm{HG}}+1)\zeta(z),
+    \qquad
+    \Phi_{\mathrm{Gouy}}^{\mathrm{LG}}=(N_{\mathrm{LG}}+1)\zeta(z)
+    }.
+    \label{eq:gouy_comparison}
+\end{equation}
+Both bases use the same propagation eigenvalue label $N$.
+```
+
+\subsection*{2. Physical Argument: Propagation and Gouy-Phase Invariance}
+
+```
+Since the Laguerre-Gaussian modes form a complete basis, any Hermite-Gaussian mode can be expanded in that basis at a fixed transverse plane. Let us write this expansion at the waist plane $z=0$, where $\zeta(0)=0$:
+\begin{equation}
+    U_{n,m}^{\mathrm{HG}}(x,y,0)
+    =
+    \sum_{p=0}^{\infty}
+    \sum_{l=-\infty}^{\infty}
+    c_{p,l}^{(n,m)}
+    U_{p,l}^{\mathrm{LG}}(\rho,\phi,0).
+    \label{eq:expansion_z0}
+\end{equation}
+The coefficients are the overlap amplitudes
+\begin{equation}
+    c_{p,l}^{(n,m)}
+    =
+    \left\langle
+    LG_p^l
+    \middle|
+    HG_{n,m}
+    \right\rangle
+    =
+    \int
+    \left[
+    U_{p,l}^{\mathrm{LG}}(\rho,\phi,0)
+    \right]^*
+    U_{n,m}^{\mathrm{HG}}(x,y,0)
+    \,d^2\mathbf r_\perp.
+    \label{eq:overlap_coefficients}
+\end{equation}
+Because the paraxial wave equation is linear, each mode in Eq.~\eqref{eq:expansion_z0} propagates independently. Therefore, after propagation to a general position $z$, each term acquires its own Gouy phase:
+\begin{equation}
+    U_{n,m}^{\mathrm{HG}}(x,y,z)
+    =
+    \sum_{p,l}
+    c_{p,l}^{(n,m)}
+    U_{p,l}^{\mathrm{LG}}(\rho,\phi,z).
+    \label{eq:expansion_z}
+\end{equation}
+
+Now isolate only the Gouy-phase factors, since the plane-wave carrier $\exp(ikz)$, the Gaussian curvature factor, and the beam width scaling are common structures inside the paraxial Gaussian-mode family. Using Eqs.~\eqref{eq:HG_gouy_order} and~\eqref{eq:LG_gouy_order}, Eq.~\eqref{eq:expansion_z} contains terms of the form
+\begin{equation}
+    e^{-i(N_{\mathrm{HG}}+1)\zeta(z)}
+    =
+    \sum_{p,l}
+    c_{p,l}^{(n,m)}
+    \left(\text{transverse LG structure}\right)
+    e^{-i(N_{\mathrm{LG}}+1)\zeta(z)}.
+    \label{eq:gouy_phase_comparison_expansion}
+\end{equation}
+Multiplying both sides by $e^{+i(N_{\mathrm{HG}}+1)\zeta(z)}$, every LG contribution carries the relative phase
+\begin{equation}
+    \exp\left[
+        -i
+        (N_{\mathrm{LG}}-N_{\mathrm{HG}})
+        \zeta(z)
+    \right].
+    \label{eq:relative_gouy_phase}
+\end{equation}
+
+The left-hand side represents one single HG propagation eigenmode. It does not contain longitudinal beating between different Gouy orders. If the right-hand side contained any term with
+\[
+    N_{\mathrm{LG}}\neq N_{\mathrm{HG}},
+\]
+then that term would acquire a relative phase depending on $z$ through Eq.~\eqref{eq:relative_gouy_phase}. Since $\zeta(z)=\tan^{-1}(z/z_R)$ varies continuously during propagation, this relative phase would generate longitudinal beating between different transverse orders.
+
+Such beating cannot occur in the propagation of a single HG mode, because Eq.~(3.3-10) of Saleh and Teich shows that $HG_{n,m}$ is itself an exact propagation mode of the paraxial Helmholtz equation. Therefore, consistency for all $z$ requires
+\begin{equation}
+    c_{p,l}^{(n,m)}=0
+    \qquad
+    \text{whenever}
+    \qquad
+    2p+|l|\neq n+m.
+    \label{eq:block_condition}
+\end{equation}
+This already proves the block-diagonal property:
+\begin{equation}
+    \boxed{
+    \left\langle
+    LG_p^l
+    \middle|
+    HG_{n,m}
+    \right\rangle
+    =
+    0
+    \quad
+    \text{if}
+    \quad
+    2p+|l|\neq n+m.
+    }
+    \label{eq:overlap_selection_rule}
+\end{equation}
+```
+
+\subsection*{3. Mathematical Argument: Degenerate Subspaces of the Two-Dimensional Harmonic Oscillator}
+
+```
+The same result can be seen algebraically at the waist plane. At $z=0$, all HG and LG modes contain the same fundamental Gaussian envelope. After this common Gaussian factor is removed, what remains is a polynomial structure.
+
+To make this explicit, define the dimensionless Cartesian variables
+\begin{equation}
+    X=\frac{\sqrt{2}x}{w_0},
+    \qquad
+    Y=\frac{\sqrt{2}y}{w_0}.
+    \label{eq:dimensionless_cartesian}
+\end{equation}
+Then the waist-plane HG mode has the structure
+\begin{equation}
+    HG_{n,m}(X,Y,0)
+    \propto
+    H_n(X)H_m(Y)
+    \exp\left[
+        -\frac{X^2+Y^2}{2}
+    \right].
+    \label{eq:HG_waist_polynomial}
+\end{equation}
+This is exactly the functional structure indicated by Saleh and Teich's Eq.~(3.3-11), where the Hermite-Gaussian function is a Hermite polynomial multiplied by a Gaussian.
+
+Similarly, using
+\begin{equation}
+    \rho^2=x^2+y^2,
+    \qquad
+    e^{-il\phi}
+    =
+    \left(
+        \frac{x-iy}{\rho}
+    \right)^l
+    \quad
+    (l>0),
+    \label{eq:polar_cartesian_relation}
+\end{equation}
+and the analogous expression for $l<0$, the azimuthal factor of an LG mode may be written as a Cartesian polynomial:
+\begin{equation}
+    \rho^{|l|}e^{-il\phi}
+    =
+    \begin{cases}
+        (x-iy)^l, & l\geq 0,\\[4pt]
+        (x+iy)^{|l|}, & l<0.
+    \end{cases}
+    \label{eq:azimuthal_polynomial}
+\end{equation}
+Therefore, the waist-plane LG mode has the polynomial structure
+\begin{equation}
+    LG_p^l(\rho,\phi,0)
+    \propto
+    \rho^{|l|}
+    L_p^{|l|}
+    \left(
+        \frac{2\rho^2}{w_0^2}
+    \right)
+    e^{-il\phi}
+    \exp\left[
+        -\frac{\rho^2}{w_0^2}
+    \right].
+    \label{eq:LG_waist_polynomial}
+\end{equation}
+Since $L_p^{|l|}$ is a polynomial of degree $p$ in $\rho^2=x^2+y^2$, the highest total Cartesian degree of the LG polynomial part is
+\begin{equation}
+    |l|+2p=N_{\mathrm{LG}}.
+    \label{eq:LG_polynomial_order}
+\end{equation}
+
+However, the statement is stronger than a simple comparison of polynomial degrees. The proper mathematical reason is that both the HG and LG waist-plane functions are eigenfunctions of the same two-dimensional harmonic-oscillator operator. In dimensionless variables, this operator may be written as
+\begin{equation}
+    \hat{N}
+    =
+    \frac{1}{2}
+    \left(
+        -\frac{\partial^2}{\partial X^2}
+        -\frac{\partial^2}{\partial Y^2}
+        +X^2+Y^2
+    \right)
+    -1.
+    \label{eq:number_operator_2d}
+\end{equation}
+The Hermite-Gaussian functions diagonalize this operator in Cartesian coordinates:
+\begin{equation}
+    \hat{N}
+    HG_{n,m}
+    =
+    (n+m)
+    HG_{n,m}.
+    \label{eq:HG_number_eigenvalue}
+\end{equation}
+The Laguerre-Gaussian functions diagonalize the same operator in polar coordinates:
+\begin{equation}
+    \hat{N}
+    LG_p^l
+    =
+    (2p+|l|)
+    LG_p^l.
+    \label{eq:LG_number_eigenvalue}
+\end{equation}
+This is the optical version of the degeneracy of the two-dimensional isotropic harmonic oscillator: the same eigenspace of total excitation number $N$ may be described either by Cartesian quantum numbers $(n,m)$ or by polar quantum numbers $(p,l)$.
+
+Since $\hat{N}$ is self-adjoint, eigenfunctions with different eigenvalues are orthogonal. Thus, if
+\[
+    n+m\neq 2p+|l|,
+\]
+then
+\begin{equation}
+    \left\langle
+    LG_p^l
+    \middle|
+    HG_{n,m}
+    \right\rangle
+    =
+    0.
+    \label{eq:orthogonality_different_N}
+\end{equation}
+This is the same selection rule obtained from the Gouy-phase argument, but now written as an orthogonality relation between different eigenspaces of the transverse harmonic-oscillator operator.
+```
+
+\subsection*{4. Dimension of Each Block}
+
+```
+For a fixed total order $N$, the HG basis contains the $N+1$ modes
+\begin{equation}
+    HG_{0,N},
+    HG_{1,N-1},
+    HG_{2,N-2},
+    \ldots,
+    HG_{N,0}.
+    \label{eq:HG_block_modes}
+\end{equation}
+Therefore, the HG subspace of order $N$ has dimension
+\begin{equation}
+    \dim \mathcal{H}_N^{\mathrm{HG}}=N+1.
+    \label{eq:HG_block_dimension}
+\end{equation}
+
+The LG basis at the same order consists of all integer $l$ such that
+\begin{equation}
+    N=2p+|l|,
+    \qquad
+    p=0,1,2,\ldots.
+    \label{eq:LG_order_constraint}
+\end{equation}
+Hence $|l|$ must have the same parity as $N$, and the allowed signed values are
+\begin{equation}
+    l=-N,\,-N+2,\,-N+4,\ldots,\,N-2,\,N.
+    \label{eq:allowed_l_values}
+\end{equation}
+This gives exactly $N+1$ allowed LG modes. Therefore,
+\begin{equation}
+    \dim \mathcal{H}_N^{\mathrm{LG}}=N+1.
+    \label{eq:LG_block_dimension}
+\end{equation}
+
+Since both bases span the same eigenspace of $\hat{N}$ with the same dimension, the transformation between them is unitary within each fixed-$N$ subspace and zero between different-$N$ subspaces.
+```
+
+\subsection*{5. Explicit Block-Diagonal Form}
+
+```
+Let us order the HG basis by increasing total order:
+\begin{equation}
+    \{HG_{0,0}\};
+    \quad
+    \{HG_{1,0},HG_{0,1}\};
+    \quad
+    \{HG_{2,0},HG_{1,1},HG_{0,2}\};
+    \quad
+    \ldots
+\end{equation}
+and order the LG basis similarly:
+\begin{equation}
+    \{LG_0^0\};
+    \quad
+    \{LG_0^{-1},LG_0^{+1}\};
+    \quad
+    \{LG_0^{-2},LG_1^0,LG_0^{+2}\};
+    \quad
+    \ldots.
+\end{equation}
+
+The transformation matrix
+\begin{equation}
+    M_{(p,l),(n,m)}
+    =
+    \left\langle
+    LG_p^l
+    \middle|
+    HG_{n,m}
+    \right\rangle
+    \label{eq:transformation_matrix}
+\end{equation}
+then has the structure
+\begin{equation}
+    M
+    =
+    \begin{pmatrix}
+        M^{(0)} & 0 & 0 & 0 & \cdots \\
+        0 & M^{(1)} & 0 & 0 & \cdots \\
+        0 & 0 & M^{(2)} & 0 & \cdots \\
+        0 & 0 & 0 & M^{(3)} & \cdots \\
+        \vdots & \vdots & \vdots & \vdots & \ddots
+    \end{pmatrix},
+    \label{eq:block_diagonal_matrix}
+\end{equation}
+where each block $M^{(N)}$ is an $(N+1)\times(N+1)$ matrix acting only inside the fixed-order subspace
+\begin{equation}
+    \mathcal H_N
+    =
+    \mathrm{span}
+    \left\{
+        HG_{n,m}: n+m=N
+    \right\}
+    =
+    \mathrm{span}
+    \left\{
+        LG_p^l: 2p+|l|=N
+    \right\}.
+    \label{eq:same_subspace}
+\end{equation}
+```
+
+\subsection*{6. Low-Order Examples}
+
+```
+The first few blocks illustrate the selection rule.
+
+\paragraph*{Order $N=0$}
+There is only one mode:
+\begin{equation}
+    HG_{0,0}
+    \leftrightarrow
+    LG_0^0.
+\end{equation}
+Both are simply the fundamental Gaussian beam, as stated by Saleh and Teich below Eq.~(3.4-1).
+
+\paragraph*{Order $N=1$}
+The HG basis is
+\begin{equation}
+    \{HG_{1,0},HG_{0,1}\},
+\end{equation}
+while the LG basis is
+\begin{equation}
+    \{LG_0^{+1},LG_0^{-1}\}.
+\end{equation}
+Up to normalization and phase conventions,
+\begin{equation}
+    LG_0^{+1}
+    \propto
+    HG_{1,0}
+    -
+    iHG_{0,1},
+    \qquad
+    LG_0^{-1}
+    \propto
+    HG_{1,0}
+    +
+    iHG_{0,1}.
+    \label{eq:N1_example}
+\end{equation}
+This is the same type of result requested in Saleh and Teich's Exercise~3.4-1, where a first-order Laguerre-Gaussian beam is written as a superposition of first-order Hermite-Gaussian beams with a relative phase of $\pi/2$.
+
+\paragraph*{Order $N=2$}
+The HG basis is
+\begin{equation}
+    \{HG_{2,0},HG_{1,1},HG_{0,2}\},
+\end{equation}
+and the LG basis is
+\begin{equation}
+    \{LG_0^{+2},LG_1^0,LG_0^{-2}\}.
+\end{equation}
+Again, no modes of order $N=0$ or $N=1$ enter this expansion, because their Gouy phases and oscillator eigenvalues are different.
+```
+
+\subsection*{Conclusion}
+
+```
+The transformation between Hermite-Gaussian and Laguerre-Gaussian modes is block-diagonal because both families are complete bases of the same paraxial solution space, but they decompose that space into the same invariant subspaces labeled by the total transverse order
+\begin{equation}
+    N=n+m=2p+|l|.
+\end{equation}
+The physical reason is the Gouy phase: modes of different $N$ acquire different propagation phases $(N+1)\zeta(z)$ and therefore cannot mix in the expansion of a single propagation eigenmode. The mathematical reason is the degeneracy of the two-dimensional isotropic harmonic oscillator: HG modes diagonalize the transverse oscillator in Cartesian coordinates, while LG modes diagonalize the same oscillator in polar coordinates. Thus, the overlap matrix satisfies
+\begin{equation}
+    \boxed{
+    \left\langle
+    LG_p^l
+    \middle|
+    HG_{n,m}
+    \right\rangle
+    =
+    0
+    \quad
+    \text{unless}
+    \quad
+    2p+|l|=n+m
+    }.
+\end{equation}
+Therefore, when the modes are ordered by increasing $N$, the transformation matrix contains nonzero elements only inside finite-dimensional diagonal blocks of size $(N+1)\times(N+1)$.
+```
+
+\end{resolucao}

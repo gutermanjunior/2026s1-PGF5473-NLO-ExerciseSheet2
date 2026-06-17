@@ -1,0 +1,660 @@
+% ============================================================================
+% ex2.tex
+% ============================================================================
+% Exercício individual da lista.
+% Este arquivo deve conter apenas o conteúdo do exercício e, quando desejado,
+% sua resolução. Não deve carregar pacotes nem redefinir configurações globais.
+%
+% Interface adotada neste exemplo:
+% - ambiente `exercicio` com identificador textual livre;
+% - ambiente `resolucao` para a solução;
+% - subseções internas apenas para organizar a exposição.
+% ============================================================================
+
+\begin{exercicio}[Problem 2 --- Paraxial Wave Equation in Cylindrical Coordinates]
+Solve the paraxial wave equation in cylindrical coordinates, and show that the solutions are the Laguerre-Gaussian modes.
+\end{exercicio}
+
+\begin{resolucao}[Solution]
+
+```
+\subsection*{1. Derivation of the Paraxial Wave Equation (PWE)}
+
+    We start from the linear, monochromatic Helmholtz equation for a scalar optical field $U(\mathbf{r})$ propagating in a homogeneous medium with wavevector $k$:
+    \begin{equation}
+        \nabla^2 U(\mathbf{r}) + k^2 U(\mathbf{r}) = 0.
+        \label{eq:helmholtz}
+    \end{equation}
+    This is the scalar version of the homogeneous wave equation used for beam propagation in a source-free, linear medium. In \textbf{Section 3.1 of \authorlinkcite{Saleh}} (\textit{The Gaussian Beam}, pp.~80--88), Saleh and Teich introduce paraxial waves by writing the monochromatic complex amplitude as a rapidly oscillating axial carrier multiplied by a slowly varying envelope. Their convention is
+    \begin{equation}
+        U(\mathbf{r}) = A(\mathbf{r})e^{-jkz},
+        \tag{Saleh Eq.~3.1-1}
+    \end{equation}
+    which leads to the paraxial Helmholtz equation given in their Eq.~(3.1-2). In this solution I use the equivalent carrier convention
+    \begin{equation}
+        U(\rho,\phi,z) = A(\rho,\phi,z)e^{ikz}.
+        \label{eq:envelope_separation}
+    \end{equation}
+    The difference between the two conventions is only a global complex-conjugation/sign convention for the phase. With the convention in Eq.~\eqref{eq:envelope_separation}, the sign of the first-order longitudinal derivative in the paraxial equation is the one written below. The physical mode family is, of course, the same.
+    
+    To substitute Eq.~\eqref{eq:envelope_separation} into Eq.~\eqref{eq:helmholtz}, we evaluate the Laplacian operator. Since the desired modes are cylindrically symmetric up to an azimuthal phase factor, it is natural to use cylindrical coordinates:
+    \begin{equation}
+        \nabla^2
+        =
+        \nabla_T^2
+        +
+        \frac{\partial^2}{\partial z^2},
+        \qquad
+        \nabla_T^2
+        =
+        \frac{\partial^2}{\partial \rho^2}
+        +
+        \frac{1}{\rho}
+        \frac{\partial}{\partial \rho}
+        +
+        \frac{1}{\rho^2}
+        \frac{\partial^2}{\partial \phi^2}.
+        \label{eq:laplacian_cylindrical}
+    \end{equation}
+    This is the same transverse-Laplacian structure used by \textbf{\authorlinkcite{Boyd}} in Sec.~2.10.1, where Boyd writes the paraxial wave equation for focused nonlinear-optics problems and gives the cylindrical form
+    \[
+        \nabla_T^2
+        =
+        \frac{1}{r}
+        \frac{\partial}{\partial r}
+        \left(
+            r\frac{\partial}{\partial r}
+        \right)
+        +
+        \frac{1}{r^2}
+        \frac{\partial^2}{\partial\phi^2}.
+    \]
+    In the notation used here, $r$ is denoted by $\rho$.
+
+    Let us explicitly calculate the first and second partial derivatives of the field $U$ with respect to the propagation coordinate $z$:
+    \begin{equation}
+        \frac{\partial U}{\partial z}
+        =
+        \left(
+            \frac{\partial A}{\partial z}
+            +
+            ikA
+        \right)e^{ikz},
+        \label{eq:first_z_derivative}
+    \end{equation}
+    and
+    \begin{equation}
+        \frac{\partial^2 U}{\partial z^2}
+        =
+        \frac{\partial}{\partial z}
+        \left[
+            \left(
+                \frac{\partial A}{\partial z}
+                +
+                ikA
+            \right)e^{ikz}
+        \right]
+        =
+        \left(
+            \frac{\partial^2 A}{\partial z^2}
+            +
+            i2k\frac{\partial A}{\partial z}
+            -
+            k^2A
+        \right)e^{ikz}.
+        \label{eq:z_derivatives}
+    \end{equation}
+    
+    Substituting Eq.~\eqref{eq:z_derivatives} into the Helmholtz equation \eqref{eq:helmholtz}, and using the fact that transverse derivatives act only on the envelope $A$, gives
+    \begin{equation}
+        \left(
+            \nabla_T^2 A
+            +
+            \frac{\partial^2 A}{\partial z^2}
+            +
+            i2k\frac{\partial A}{\partial z}
+            -
+            k^2A
+        \right)e^{ikz}
+        +
+        k^2Ae^{ikz}
+        =
+        0.
+    \end{equation}
+    The terms proportional to $k^2A$ cancel exactly, leaving
+    \begin{equation}
+        \nabla_T^2 A
+        +
+        \frac{\partial^2 A}{\partial z^2}
+        +
+        i2k\frac{\partial A}{\partial z}
+        =
+        0.
+        \label{eq:exact_envelope_equation_before_paraxial}
+    \end{equation}
+    
+    At this stage, we invoke the \textbf{paraxial approximation}. The physical assumption, also stated by Boyd in Sec.~2.10.1 when deriving his Eq.~(2.10.3), is that the envelope changes appreciably only over distances much larger than the optical wavelength. Thus the second derivative of the envelope with respect to $z$ is small compared with the first derivative multiplied by $k$:
+    \begin{equation}
+        \left|
+            \frac{\partial^2 A}{\partial z^2}
+        \right|
+        \ll
+        2k
+        \left|
+            \frac{\partial A}{\partial z}
+        \right|.
+        \label{eq:paraxial_approximation}
+    \end{equation}
+    Dropping $\partial^2 A/\partial z^2$ in Eq.~\eqref{eq:exact_envelope_equation_before_paraxial} gives the homogeneous paraxial wave equation:
+    \begin{equation}
+        \nabla_T^2 A
+        +
+        i2k
+        \frac{\partial A}{\partial z}
+        =
+        0.
+        \label{eq:pwe_compact}
+    \end{equation}
+    Written explicitly in cylindrical coordinates, Eq.~\eqref{eq:pwe_compact} becomes
+    \begin{equation}
+        \frac{\partial^2 A}{\partial \rho^2}
+        +
+        \frac{1}{\rho}
+        \frac{\partial A}{\partial \rho}
+        +
+        \frac{1}{\rho^2}
+        \frac{\partial^2 A}{\partial \phi^2}
+        +
+        i2k
+        \frac{\partial A}{\partial z}
+        =
+        0.
+        \label{eq:pwe_cyl_final}
+    \end{equation}
+    This is the cylindrical version of the paraxial Helmholtz equation used in \authorlinkcite{Saleh}, Sec.~3.1, Eq.~(3.1-2), after adapting the phase convention from $e^{-jkz}$ to $e^{ikz}$.
+
+\subsection*{2. Azimuthal Separation of Variables}
+
+    Because Eq.~\eqref{eq:pwe_cyl_final} is invariant under rotations around the $z$-axis, its solutions can be chosen as eigenfunctions of the azimuthal operator $-i\partial/\partial\phi$. This is the cylindrical-coordinate analogue of the separation procedure used by Saleh and Teich in Sec.~3.3 for Hermite-Gaussian beams, where the Cartesian transverse variables are separated. In Sec.~3.4, Saleh and Teich state that the Laguerre-Gaussian family is obtained by writing the paraxial Helmholtz equation in cylindrical coordinates $(\rho,\phi,z)$ and then separating variables in $\rho$ and $\phi$.
+
+    We therefore seek solutions of the form
+    \begin{equation}
+        A(\rho,\phi,z)
+        =
+        u(\rho,z)e^{-il\phi},
+        \qquad
+        l\in\mathbb{Z}.
+        \label{eq:azimuthal_sep}
+    \end{equation}
+    The integer $l$ labels the azimuthal phase winding. Its sign fixes the handedness of the helical phase; its magnitude $|l|$ controls the radial behavior near the beam axis.
+
+    The second derivative with respect to $\phi$ is
+    \begin{equation}
+        \frac{\partial^2 A}{\partial \phi^2}
+        =
+        (-il)^2u(\rho,z)e^{-il\phi}
+        =
+        -l^2u(\rho,z)e^{-il\phi}.
+    \end{equation}
+    Substituting this into Eq.~\eqref{eq:pwe_cyl_final} and factoring out $e^{-il\phi}$ gives the radial paraxial equation
+    \begin{equation}
+        \frac{\partial^2 u}{\partial \rho^2}
+        +
+        \frac{1}{\rho}
+        \frac{\partial u}{\partial \rho}
+        -
+        \frac{l^2}{\rho^2}u
+        +
+        i2k
+        \frac{\partial u}{\partial z}
+        =
+        0.
+        \label{eq:radial_pwe_step}
+    \end{equation}
+
+    A useful point appears already in Eq.~\eqref{eq:radial_pwe_step}. Near the beam axis, the singular term $-l^2u/\rho^2$ must be balanced by the radial derivatives. If the less singular terms are neglected locally near $\rho=0$, the leading radial equation is
+    \begin{equation}
+        \frac{d^2u}{d\rho^2}
+        +
+        \frac{1}{\rho}
+        \frac{du}{d\rho}
+        -
+        \frac{l^2}{\rho^2}u
+        \approx
+        0.
+    \end{equation}
+    Seeking $u\sim \rho^\alpha$ gives
+    \begin{equation}
+        \alpha(\alpha-1)\rho^{\alpha-2}
+        +
+        \alpha\rho^{\alpha-2}
+        -
+        l^2\rho^{\alpha-2}
+        =
+        0,
+    \end{equation}
+    hence
+    \begin{equation}
+        \alpha^2-l^2=0
+        \qquad\Rightarrow\qquad
+        \alpha=\pm |l|.
+    \end{equation}
+    The solution proportional to $\rho^{-|l|}$ is singular at $\rho=0$ and is not physically acceptable for a finite-power beam. Therefore, a regular Laguerre-Gaussian mode with $l\neq 0$ must contain the factor
+    \begin{equation}
+        u(\rho,z)\propto \rho^{|l|}
+        \quad
+        \text{near}
+        \quad
+        \rho=0.
+        \label{eq:near_axis_behavior}
+    \end{equation}
+    This is the main correction to the more naive ansatz in which the whole radial dependence is placed in an arbitrary function $R(x)$: the factor $\rho^{|l|}$ should be extracted explicitly, otherwise the singular centrifugal-like term $-l^2u/\rho^2$ is not handled cleanly.
+
+\subsection*{3. Gaussian Envelope and Corrected Laguerre-Gaussian Ansatz}
+
+    The fundamental Gaussian beam is the lowest-order solution of the paraxial equation. In Saleh and Teich, Sec.~3.1, the Gaussian beam is written in Eq.~(3.1-7) in terms of the beam radius $W(z)$, radius of curvature $R(z)$, Gouy phase $C(z)$, and Rayleigh range $z_0$, defined in Eqs.~(3.1-8)--(3.1-11). Using the more common notation
+    \[
+        W(z)\to w(z),
+        \qquad
+        z_0\to z_R,
+        \qquad
+        C(z)\to \zeta_G(z),
+    \]
+    these functions are
+    \begin{equation}
+        w(z)
+        =
+        w_0
+        \sqrt{
+            1+\left(\frac{z}{z_R}\right)^2
+        },
+        \label{eq:wz}
+    \end{equation}
+    \begin{equation}
+        R(z)
+        =
+        z
+        \left[
+            1+
+            \left(
+                \frac{z_R}{z}
+            \right)^2
+        \right],
+        \label{eq:Rz}
+    \end{equation}
+    \begin{equation}
+        \zeta_G(z)
+        =
+        \tan^{-1}
+        \left(
+            \frac{z}{z_R}
+        \right),
+        \label{eq:gouy}
+    \end{equation}
+    and
+    \begin{equation}
+        z_R
+        =
+        \frac{\pi n w_0^2}{\lambda_0}
+        =
+        \frac{k w_0^2}{2},
+        \label{eq:rayleigh_range}
+    \end{equation}
+    where $\lambda_0$ is the vacuum wavelength and $k=2\pi n/\lambda_0$ is the wavenumber in the medium.
+
+    With the phase convention adopted in Eq.~\eqref{eq:envelope_separation}, a convenient fundamental Gaussian envelope is
+    \begin{equation}
+        \psi_0(\rho,z)
+        =
+        \frac{w_0}{w(z)}
+        \exp\left[
+            -\frac{\rho^2}{w^2(z)}
+        \right]
+        \exp\left[
+            -i\frac{k\rho^2}{2R(z)}
+        \right]
+        \exp\left[
+            i\zeta_G(z)
+        \right].
+        \label{eq:fundamental_gaussian_envelope}
+    \end{equation}
+    This is the same physical Gaussian beam as Saleh's Eq.~(3.1-7), with the phase signs adapted to the carrier convention used here.
+
+    To construct higher-order modes in cylindrical coordinates, introduce the dimensionless radial variable
+    \begin{equation}
+        x
+        =
+        \frac{2\rho^2}{w^2(z)}.
+        \label{eq:x_definition}
+    \end{equation}
+    The factor $\exp[-\rho^2/w^2(z)]$ in Eq.~\eqref{eq:fundamental_gaussian_envelope} is then $\exp(-x/2)$.
+
+    Guided by the near-axis condition in Eq.~\eqref{eq:near_axis_behavior}, the correct radial ansatz should not be merely $R(x)\psi_0$. Instead, we write
+    \begin{equation}
+        u(\rho,z)
+        =
+        x^{|l|/2}
+        F(x)
+        \psi_0(\rho,z)
+        \exp\left[
+            i\Delta\zeta_{p,l}(z)
+        \right],
+        \label{eq:corrected_ansatz_before_phase}
+    \end{equation}
+    where $F(x)$ is a dimensionless radial function to be determined and $\Delta\zeta_{p,l}(z)$ is the additional Gouy phase beyond the fundamental Gaussian phase already contained in $\psi_0$.
+
+    Since $x^{|l|/2}\propto \rho^{|l|}$, Eq.~\eqref{eq:corrected_ansatz_before_phase} automatically satisfies the required regularity condition at the beam axis. This is precisely the radial structure that appears in Saleh's Eq.~(3.4-1), where the Laguerre-Gaussian mode contains a factor proportional to
+    \[
+        \left(
+            \frac{\rho}{W(z)}
+        \right)^l
+    \]
+    in the notation of Saleh and Teich. In the present notation, allowing both handednesses of the azimuthal phase, this factor becomes
+    \[
+        \left(
+            \frac{\sqrt{2}\rho}{w(z)}
+        \right)^{|l|}.
+    \]
+
+\subsection*{4. Reduction to the Associated Laguerre Equation}
+
+    We now substitute the corrected ansatz into the radial paraxial equation. It is useful to isolate the non-Gaussian radial factor
+    \begin{equation}
+        S(x)
+        =
+        x^{s/2}F(x),
+        \qquad
+        s=|l|.
+        \label{eq:S_definition}
+    \end{equation}
+    Then
+    \begin{equation}
+        u(\rho,z)
+        =
+        S(x)\psi_0(\rho,z)
+        \exp[
+            i\Delta\zeta_{p,l}(z)
+        ].
+        \label{eq:u_with_S}
+    \end{equation}
+
+    The chain rule gives
+    \begin{equation}
+        \frac{\partial x}{\partial \rho}
+        =
+        \frac{4\rho}{w^2(z)},
+        \qquad
+        \frac{\partial^2 x}{\partial \rho^2}
+        =
+        \frac{4}{w^2(z)}.
+        \label{eq:x_rho_derivatives}
+    \end{equation}
+    Therefore,
+    \begin{equation}
+        \frac{\partial S}{\partial \rho}
+        =
+        \frac{dS}{dx}
+        \frac{\partial x}{\partial \rho}
+        =
+        \frac{4\rho}{w^2(z)}
+        \frac{dS}{dx},
+        \label{eq:first_chain_S}
+    \end{equation}
+    and
+    \begin{equation}
+        \frac{\partial^2 S}{\partial \rho^2}
+        =
+        \frac{4}{w^2(z)}
+        \frac{dS}{dx}
+        +
+        \frac{16\rho^2}{w^4(z)}
+        \frac{d^2S}{dx^2}
+        =
+        \frac{4}{w^2(z)}
+        \frac{dS}{dx}
+        +
+        \frac{8x}{w^2(z)}
+        \frac{d^2S}{dx^2}.
+        \label{eq:second_chain_S}
+    \end{equation}
+    Since
+    \begin{equation}
+        S(x)=x^{s/2}F(x),
+    \end{equation}
+    its first two derivatives are
+    \begin{equation}
+        \frac{dS}{dx}
+        =
+        x^{s/2}\frac{dF}{dx}
+        +
+        \frac{s}{2}
+        x^{s/2-1}F,
+        \label{eq:S_first_derivative}
+    \end{equation}
+    and
+    \begin{equation}
+        \frac{d^2S}{dx^2}
+        =
+        x^{s/2}\frac{d^2F}{dx^2}
+        +
+        s x^{s/2-1}\frac{dF}{dx}
+        +
+        \frac{s}{2}
+        \left(
+            \frac{s}{2}-1
+        \right)
+        x^{s/2-2}F.
+        \label{eq:S_second_derivative}
+    \end{equation}
+
+    Substitution of Eq.~\eqref{eq:u_with_S} into Eq.~\eqref{eq:radial_pwe_step} is algebraically long, but the structure is simple. The fundamental Gaussian factor $\psi_0(\rho,z)$ independently satisfies the paraxial equation. Hence all terms that would already be present for the fundamental mode cancel. The remaining terms are those generated by the radial modulation $S(x)$, by the azimuthal term $-l^2u/\rho^2$, and by the additional Gouy phase $\Delta\zeta_{p,l}(z)$.
+
+    The reason for extracting $x^{s/2}$ is now visible: the terms proportional to $x^{s/2-1}F$ generated by differentiating $x^{s/2}$ cancel the singular contribution coming from
+    \[
+        -\frac{l^2}{\rho^2}u.
+    \]
+    After this cancellation, the differential equation for $F(x)$ becomes
+    \begin{equation}
+        x\frac{d^2F}{dx^2}
+        +
+        (s+1-x)
+        \frac{dF}{dx}
+        +
+        \Lambda F
+        =
+        0,
+        \qquad
+        s=|l|,
+        \label{eq:laguerre_with_lambda}
+    \end{equation}
+    where $\Lambda$ is the separation constant associated with the additional longitudinal phase. More explicitly, consistency of the $z$-dependent terms gives
+    \begin{equation}
+        \frac{d\Delta\zeta_{p,l}}{dz}
+        =
+        (2\Lambda+s)
+        \frac{d\zeta_G}{dz}.
+        \label{eq:extra_gouy_relation_lambda}
+    \end{equation}
+    The physical finite-power solutions occur when the radial series terminates. This requires
+    \begin{equation}
+        \Lambda=p,
+        \qquad
+        p=0,1,2,\ldots.
+        \label{eq:p_integer_condition}
+    \end{equation}
+    With this identification, Eq.~\eqref{eq:laguerre_with_lambda} becomes
+    \begin{equation}
+        \boxed{
+        x\frac{d^2F}{dx^2}
+        +
+        (|l|+1-x)
+        \frac{dF}{dx}
+        +
+        pF
+        =
+        0
+        }.
+        \label{eq:associated_laguerre_final}
+    \end{equation}
+    This is the associated Laguerre differential equation. Therefore,
+    \begin{equation}
+        F(x)
+        =
+        L_p^{|l|}(x),
+        \label{eq:laguerre_solution}
+    \end{equation}
+    where $L_p^{|l|}$ is an associated Laguerre polynomial.
+
+    The normalizability condition is important. If $p$ were not a non-negative integer, the solution would not terminate into a polynomial and the radial factor would generally grow too rapidly at large $x$ to represent a finite-power beam after multiplication by the Gaussian envelope. The physically acceptable paraxial modes therefore select the discrete radial index
+    \[
+        p=0,1,2,\ldots.
+    \]
+
+\subsection*{5. Determination of the Generalized Gouy Phase}
+
+    Saleh and Teich's Gaussian beam has a Gouy phase $C(z)$, given in their Eq.~(3.1-10). In the notation used here,
+    \[
+        C(z)\equiv \zeta_G(z)
+        =
+        \tan^{-1}
+        \left(
+            \frac{z}{z_R}
+        \right).
+    \]
+    Differentiating gives
+    \begin{equation}
+        \frac{d\zeta_G}{dz}
+        =
+        \frac{1}{z_R}
+        \frac{1}{1+(z/z_R)^2}.
+        \label{eq:gouy_derivative_1}
+    \end{equation}
+    Using
+    \[
+        w^2(z)
+        =
+        w_0^2
+        \left[
+            1+
+            \left(
+                \frac{z}{z_R}
+            \right)^2
+        \right],
+        \qquad
+        k w_0^2 = 2z_R,
+    \]
+    Eq.~\eqref{eq:gouy_derivative_1} may also be written as
+    \begin{equation}
+        \frac{d\zeta_G}{dz}
+        =
+        \frac{2}{k w^2(z)}.
+        \label{eq:gouy_derivative_2}
+    \end{equation}
+
+    From Eq.~\eqref{eq:extra_gouy_relation_lambda} with $\Lambda=p$, the additional Gouy phase beyond the fundamental Gaussian contribution is
+    \begin{equation}
+        \frac{d\Delta\zeta_{p,l}}{dz}
+        =
+        (2p+|l|)
+        \frac{d\zeta_G}{dz}.
+        \label{eq:extra_gouy_differential}
+    \end{equation}
+    Integrating from the waist plane $z=0$, where $\zeta_G(0)=0$, gives
+    \begin{equation}
+        \Delta\zeta_{p,l}(z)
+        =
+        (2p+|l|)
+        \zeta_G(z)
+        =
+        (2p+|l|)
+        \tan^{-1}
+        \left(
+            \frac{z}{z_R}
+        \right).
+        \label{eq:extra_gouy_integrated}
+    \end{equation}
+    The total Gouy phase of the mode is the fundamental Gaussian Gouy phase already contained in $\psi_0$ plus this excess phase:
+    \begin{equation}
+        \boxed{
+        \zeta_{p,l}^{\mathrm{tot}}(z)
+        =
+        (2p+|l|+1)
+        \tan^{-1}
+        \left(
+            \frac{z}{z_R}
+        \right)
+        }.
+        \label{eq:total_gouy_lg}
+    \end{equation}
+    This is the corrected form of the result. It agrees with Saleh and Teich's Eq.~(3.4-1), where the Gouy phase factor is written as $(l+2m+1)C(z)$, with $l\geq0$ denoting the azimuthal index magnitude and $m\geq0$ the radial index. In the notation of this solution,
+    \[
+        m \leftrightarrow p,
+        \qquad
+        l_{\mathrm{Saleh}}\leftrightarrow |l|.
+    \]
+    Therefore,
+    \[
+        l_{\mathrm{Saleh}}+2m+1
+        =
+        |l|+2p+1.
+    \]
+
+\subsection*{6. Final Laguerre-Gaussian Modes}
+
+    Combining the Gaussian envelope, the regular near-axis radial factor, the associated Laguerre polynomial, the helical azimuthal phase, and the generalized Gouy phase, we obtain
+    \begin{equation}
+        \boxed{
+        \begin{aligned}
+        A_{p,l}(\rho,\phi,z)
+        &=
+        A_{p,l}^{(0)}
+        \frac{w_0}{w(z)}
+        \left(
+            \frac{\sqrt{2}\rho}{w(z)}
+        \right)^{|l|}
+        L_p^{|l|}
+        \left(
+            \frac{2\rho^2}{w^2(z)}
+        \right)
+        \exp\left[
+            -\frac{\rho^2}{w^2(z)}
+        \right]
+        \\[4pt]
+        &\quad\times
+        \exp\left[
+            -i\frac{k\rho^2}{2R(z)}
+        \right]
+        \exp\left[
+            i(2p+|l|+1)
+            \zeta_G(z)
+        \right]
+        \exp(-il\phi).
+        \end{aligned}
+        }
+        \label{eq:LG_final}
+    \end{equation}
+    Here
+    \[
+        p=0,1,2,\ldots,
+        \qquad
+        l\in\mathbb{Z}.
+    \]
+    The radial index $p$ counts the number of radial nodes, while the azimuthal index $l$ determines the helical phase structure and the orbital angular momentum content of the mode. The magnitude $|l|$ determines the strength of the central intensity null: for $l\neq0$, the factor $\rho^{|l|}$ forces the field to vanish on the beam axis.
+
+    The associated physical optical field is then
+    \begin{equation}
+        U_{p,l}(\rho,\phi,z)
+        =
+        A_{p,l}(\rho,\phi,z)e^{ikz},
+        \label{eq:LG_total_field}
+    \end{equation}
+    using the carrier convention adopted in Eq.~\eqref{eq:envelope_separation}. If one instead uses Saleh and Teich's carrier convention $e^{-jkz}$, the corresponding phase signs in Eq.~\eqref{eq:LG_final} are complex conjugated, but the intensity profile, Gouy-phase order, mode indices, and physical content are unchanged.
+
+    Thus, the paraxial wave equation in cylindrical coordinates admits a complete family of finite-power beam-like solutions of the form
+    \[
+        LG_p^l,
+    \]
+    namely the Laguerre-Gaussian modes. This is the cylindrical counterpart of the Hermite-Gaussian family obtained by separating the same paraxial Helmholtz equation in Cartesian coordinates. As stated in Saleh and Teich, Sec.~3.4, the Laguerre-Gaussian modes form an alternate complete set of solutions to the paraxial Helmholtz equation.
+```
+
+\end{resolucao}

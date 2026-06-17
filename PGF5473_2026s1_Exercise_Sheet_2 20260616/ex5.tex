@@ -1,0 +1,621 @@
+% ============================================================================
+% ex5.tex
+% ============================================================================
+% Exercício individual da lista.
+% Este arquivo deve conter apenas o conteúdo do exercício e, quando desejado,
+% sua resolução. Não deve carregar pacotes nem redefinir configurações globais.
+%
+% Interface adotada neste exemplo:
+% - ambiente `exercicio` com identificador textual livre;
+% - ambiente `resolucao` para a solução;
+% - subseções internas apenas para organizar a exposição.
+% ============================================================================
+
+% \begin{exercicio}[Problem 5 --- Doubly-Resonant Optical Parametric Oscillator]
+% Derive the dynamical equations for a doubly-resonant optical parametric oscillator, i.e., an OPO whose cavity is completely transparent for the pump beam. Discuss the solution for the OPO in this case and compare the threshold pump power with the triply resonant case.
+% \end{exercicio}
+
+\begin{exercicio}[Problem 5 --- Doubly-Resonant Optical Parametric Oscillator]
+An optical parametric oscillator (OPO) can exhibit distinct dynamical behaviors depending on its cavity configuration.
+
+\begin{enumerate}[a)]
+    \item Derive the dynamical equations for a doubly-resonant optical parametric oscillator, i.e., an OPO whose cavity is completely transparent for the pump beam.
+    \item Discuss the solution for the OPO in this case and compare the threshold pump power with the triply resonant case.
+\end{enumerate}
+
+\end{exercicio}
+
+\begin{resolucao}[Solution]
+
+\subsection*{1. Physical Configuration and Reference Model}
+
+The treatment used here follows \textbf{Section 2.9 of \authorlinkcite{Boyd}} (4th edition, \textit{Optical Parametric Oscillators}, pp.~102--106), not Sec.~2.10. Boyd introduces the OPO as the cavity-feedback version of optical parametric amplification: the highest-frequency wave is the pump, while the two generated lower-frequency waves are called signal and idler. This notation is fixed in Boyd's Fig.~2.9.1 and in the text immediately before Eq.~(2.9.1).
+
+The same physical picture is presented in \textbf{Section 22.4 of \authorlinkcite{Saleh}} (\textit{Second-Order Nonlinear Optics: Coupled Waves}, pp.~1047--1058). Saleh and Teich first solve the undepleted-pump optical parametric amplifier using hyperbolic functions in Eqs.~(22.4-45a,b), then define the optical parametric oscillator as the device obtained by placing the parametric amplifier inside a resonator. Their Fig.~22.4-4 distinguishes the singly resonant oscillator (SRO), in which only one of the generated waves is resonant, from the doubly resonant oscillator (DRO), in which both generated waves are resonant.
+
+In this problem, the requested configuration is a \textbf{doubly-resonant OPO with a non-resonant pump}. Thus:
+\begin{itemize}
+    \item the signal field at $\omega_s$ is resonant in the cavity;
+    \item the idler field at $\omega_i$ is resonant in the cavity;
+    \item the pump field at $\omega_p=\omega_s+\omega_i$ is not resonant and crosses the nonlinear crystal essentially in a single pass.
+\end{itemize}
+
+This is slightly different from the most general use of the phrase ``doubly resonant''. Here it means that the cavity is doubly resonant for the \emph{generated} fields, signal and idler, but transparent for the pump. In Boyd's notation this is the standard DRO case used to obtain the threshold condition in Eq.~(2.9.9).
+
+\subsection*{2. Local Coupled-Wave Equations}
+
+    Inside the nonlinear crystal, the fields satisfy the usual coupled-amplitude equations for optical parametric amplification. Boyd writes these equations in Sec.~2.9 by relabeling the pump, signal, and idler as
+    \begin{equation}
+        \omega_p=\omega_3,
+        \qquad
+        \omega_s=\omega_1,
+        \qquad
+        \omega_i=\omega_2.
+    \end{equation}
+    His Eqs.~(2.9.1a,b) are
+    \begin{align}
+        \frac{dA_1}{dz}
+        &=
+        \frac{
+            2i\omega_1^2 d_{\mathrm{eff}}
+        }{
+            k_1c^2
+        }
+        A_3A_2^*
+        e^{i\Delta kz},
+        \label{eq:boyd_291a_like}
+        \\
+        \frac{dA_2}{dz}
+        &=
+        \frac{
+            2i\omega_2^2 d_{\mathrm{eff}}
+        }{
+            k_2c^2
+        }
+        A_3A_1^*
+        e^{i\Delta kz},
+        \label{eq:boyd_291b_like}
+    \end{align}
+    where
+    \begin{equation}
+        \Delta k
+        =
+        k_3-k_1-k_2.
+        \label{eq:delta_k_opo}
+    \end{equation}
+    In the present notation, $A_1=A_s$, $A_2=A_i$, and $A_3=A_p$. Therefore,
+    \begin{align}
+        \frac{dA_s}{dz}
+        &=
+        i\kappa_s A_pA_i^*e^{i\Delta kz},
+        \label{eq:local_s}
+        \\
+        \frac{dA_i}{dz}
+        &=
+        i\kappa_i A_pA_s^*e^{i\Delta kz},
+        \label{eq:local_i}
+    \end{align}
+    with
+    \begin{equation}
+        \kappa_s
+        =
+        \frac{
+            2\omega_s^2 d_{\mathrm{eff}}
+        }{
+            k_sc^2
+        },
+        \qquad
+        \kappa_i
+        =
+        \frac{
+            2\omega_i^2 d_{\mathrm{eff}}
+        }{
+            k_ic^2
+        }.
+        \label{eq:kappas_si}
+    \end{equation}
+    The factor $i$ has been written explicitly in Eqs.~\eqref{eq:local_s}--\eqref{eq:local_i}. Thus $\kappa_s$ and $\kappa_i$ are taken real when $d_{\mathrm{eff}}$ is real and absorption is neglected.
+
+    This point corrects a common notational problem: the factor $8\pi$ does not belong in this SI form of Boyd's 4th edition. It is associated with older Gaussian-unit conventions. Since Boyd's 4th edition is written in SI units, the coefficients should be kept in the form of Eqs.~\eqref{eq:kappas_si}, consistent with Boyd's Eq.~(2.9.1).
+
+    In the undepleted-pump approximation,
+    \begin{equation}
+        A_p(z)\simeq A_p^{\mathrm{in}},
+        \label{eq:undepleted_pump}
+    \end{equation}
+    and, for perfect phase matching,
+    \begin{equation}
+        \Delta k=0.
+    \end{equation}
+    Then Eqs.~\eqref{eq:local_s}--\eqref{eq:local_i} reduce to
+    \begin{align}
+        \frac{dA_s}{dz}
+        &=
+        i\kappa_s A_p^{\mathrm{in}}A_i^*,
+        \label{eq:local_s_pm}
+        \\
+        \frac{dA_i}{dz}
+        &=
+        i\kappa_i A_p^{\mathrm{in}}A_s^*.
+        \label{eq:local_i_pm}
+    \end{align}
+
+    Boyd defines the small-signal parametric gain parameter in Eq.~(2.9.2) as
+    \begin{equation}
+        g^2=\kappa_1\kappa_2^*|A_3|^2.
+    \end{equation}
+    With the present notation and real $\kappa_s,\kappa_i$, this becomes
+    \begin{equation}
+        g_{\mathrm{OPA}}^2
+        =
+        \kappa_s\kappa_i
+        |A_p^{\mathrm{in}}|^2.
+        \label{eq:gain_boyd_definition}
+    \end{equation}
+    Here $g_{\mathrm{OPA}}$ has dimensions of inverse length. It is the spatial gain coefficient of the single-pass optical parametric amplifier.
+
+\subsection*{3. From Single-Pass Gain to Cavity Dynamics}
+
+    The OPO is an oscillator because the parametric amplifier is placed inside a cavity. The generated fields are amplified inside the crystal and attenuated by output coupling, absorption, scattering, diffraction, and imperfect mirrors after each round trip.
+
+    Let
+    \begin{equation}
+        \tau_{\mathrm{rt}}
+        =
+        \frac{L_c}{c}
+        \label{eq:round_trip_time}
+    \end{equation}
+    be the round-trip time of the cavity, where $L_c$ is the optical round-trip-equivalent cavity length. If the cavity is filled by a dispersive medium or if the group delay is important, $L_c/c$ should be replaced by the appropriate round-trip group delay.
+
+    Let $\gamma_s$ and $\gamma_i$ denote the \textbf{fractional amplitude losses per round trip} for the signal and idler fields. This convention is important: these are not power losses. If $\mathcal{L}_s$ is a small fractional power loss, then the corresponding small amplitude loss is approximately
+    \begin{equation}
+        \gamma_s\simeq \frac{\mathcal{L}_s}{2}.
+    \end{equation}
+    Boyd uses the notation $l_1$ and $l_2$ for fractional amplitude losses per pass in Eq.~(2.9.7), with
+    \[
+        l_i=1-R_ie^{-\alpha_iL}.
+    \]
+    The variables $\gamma_s,\gamma_i$ used here play the same role as Boyd's $l_1,l_2$ in the low-loss mean-field approximation.
+
+    Over one round trip, the signal amplitude changes due to cavity loss and parametric gain:
+    \begin{equation}
+        A_s(t+\tau_{\mathrm{rt}})-A_s(t)
+        =
+        -\gamma_sA_s(t)
+        +
+        \int_0^{L}
+        \frac{dA_s}{dz}dz.
+        \label{eq:discrete_signal}
+    \end{equation}
+    In the mean-field limit, the single-pass gain and loss are both small:
+    \begin{equation}
+        \gamma_s,\gamma_i\ll1,
+        \qquad
+        g_{\mathrm{OPA}}L\ll1.
+    \end{equation}
+    The fields may then be treated as approximately constant over one crystal pass when deriving the coarse-grained dynamical equations. Using Eq.~\eqref{eq:local_s_pm},
+    \begin{equation}
+        \int_0^{L}
+        \frac{dA_s}{dz}dz
+        \simeq
+        i\kappa_s L A_p^{\mathrm{in}}A_i^*.
+    \end{equation}
+    Similarly,
+    \begin{equation}
+        \int_0^{L}
+        \frac{dA_i}{dz}dz
+        \simeq
+        i\kappa_i L A_p^{\mathrm{in}}A_s^*.
+    \end{equation}
+
+    Dividing the round-trip difference equations by $\tau_{\mathrm{rt}}$, we obtain the mean-field dynamical equations for the DRO:
+    \begin{align}
+        \tau_{\mathrm{rt}}
+        \frac{dA_s}{dt}
+        &=
+        -\gamma_sA_s
+        +
+        i\kappa_sL A_p^{\mathrm{in}}A_i^*,
+        \label{eq:dro_dyn_s_kappa}
+        \\
+        \tau_{\mathrm{rt}}
+        \frac{dA_i}{dt}
+        &=
+        -\gamma_iA_i
+        +
+        i\kappa_iL A_p^{\mathrm{in}}A_s^*.
+        \label{eq:dro_dyn_i_kappa}
+    \end{align}
+    These are the requested dynamical equations for a doubly-resonant OPO with a pump-transparent cavity.
+
+    It is also useful to write the same system in a symmetric gain notation. Define the lumped single-pass gain amplitude
+    \begin{equation}
+        G
+        =
+        L\sqrt{\kappa_s\kappa_i}\,
+        A_p^{\mathrm{in}}.
+        \label{eq:lumped_G_definition}
+    \end{equation}
+    By absorbing harmless constant phases and normalization factors into the definitions of $A_s$ and $A_i$, the equations can be written as
+    \begin{align}
+        \tau_{\mathrm{rt}}
+        \frac{dA_s}{dt}
+        &=
+        -\gamma_sA_s
+        +
+        iG A_i^*,
+        \label{eq:dro_dyn_s}
+        \\
+        \tau_{\mathrm{rt}}
+        \frac{dA_i}{dt}
+        &=
+        -\gamma_iA_i
+        +
+        iG A_s^*.
+        \label{eq:dro_dyn_i}
+    \end{align}
+    In this form, $|G|=g_{\mathrm{OPA}}L$, with $g_{\mathrm{OPA}}$ defined by Eq.~\eqref{eq:gain_boyd_definition}. Thus $G$ is dimensionless and represents the single-pass parametric amplitude gain.
+
+\subsection*{4. Linear Stability and Threshold Condition}
+
+    The oscillation threshold is found by asking when the zero solution,
+    \[
+        A_s=A_i=0,
+    \]
+    changes from stable to unstable. This is the standard oscillator criterion: below threshold, cavity losses dominate and any small signal/idler field decays; above threshold, the parametric gain overcomes loss and the fields grow.
+
+    Starting from Eqs.~\eqref{eq:dro_dyn_s}--\eqref{eq:dro_dyn_i}, take the complex conjugate of the idler equation:
+    \begin{equation}
+        \tau_{\mathrm{rt}}
+        \frac{dA_i^*}{dt}
+        =
+        -\gamma_iA_i^*
+        -
+        iG^*A_s.
+        \label{eq:idler_conjugate}
+    \end{equation}
+    The linear system for the vector $(A_s,A_i^*)^T$ is then
+    \begin{equation}
+        \tau_{\mathrm{rt}}
+        \frac{d}{dt}
+        \begin{pmatrix}
+            A_s\\
+            A_i^*
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            -\gamma_s & iG\\
+            -iG^* & -\gamma_i
+        \end{pmatrix}
+        \begin{pmatrix}
+            A_s\\
+            A_i^*
+        \end{pmatrix}.
+        \label{eq:linear_matrix}
+    \end{equation}
+    At threshold, one eigenvalue of this matrix has zero real part. Setting the determinant of the matrix to zero gives
+    \begin{equation}
+        \gamma_s\gamma_i-|G|^2=0.
+    \end{equation}
+    Therefore,
+    \begin{equation}
+        |G|^2_{\mathrm{th}}
+        =
+        \gamma_s\gamma_i.
+        \label{eq:G_threshold}
+    \end{equation}
+    Using Eq.~\eqref{eq:lumped_G_definition},
+    \begin{equation}
+        L^2\kappa_s\kappa_i
+        |A_p^{\mathrm{in}}|_{\mathrm{th}}^2
+        =
+        \gamma_s\gamma_i.
+    \end{equation}
+    Hence the threshold pump amplitude is
+    \begin{equation}
+        \boxed{
+        |A_p^{\mathrm{in}}|_{\mathrm{th,DRO}}^2
+        =
+        \frac{
+            \gamma_s\gamma_i
+        }{
+            L^2\kappa_s\kappa_i
+        }
+        }.
+        \label{eq:pump_amplitude_threshold_dro}
+    \end{equation}
+
+    This result is precisely the mean-field version of Boyd's Eq.~(2.9.9):
+    \begin{equation}
+        g_{\mathrm{OPA}}^2L^2=l_1l_2.
+        \tag{Boyd Eq.~2.9.9}
+    \end{equation}
+    In our notation,
+    \[
+        l_1\rightarrow \gamma_s,
+        \qquad
+        l_2\rightarrow \gamma_i,
+        \qquad
+        g_{\mathrm{OPA}}^2=\kappa_s\kappa_i|A_p|^2.
+    \]
+    Therefore, Eq.~\eqref{eq:pump_amplitude_threshold_dro} is the same threshold condition expressed in terms of the incident non-resonant pump amplitude.
+
+    If the phase mismatch is not zero, Boyd states after Eq.~(2.9.10) that the threshold condition is modified by replacing
+    \begin{equation}
+        g_{\mathrm{OPA}}^2
+        \longrightarrow
+        g_{\mathrm{OPA}}^2
+        \operatorname{sinc}^2
+        \left(
+            \frac{\Delta kL}{2}
+        \right).
+    \end{equation}
+    Therefore,
+    \begin{equation}
+        |A_p^{\mathrm{in}}|_{\mathrm{th,DRO}}^2
+        =
+        \frac{
+            \gamma_s\gamma_i
+        }{
+            L^2\kappa_s\kappa_i
+            \operatorname{sinc}^2(\Delta kL/2)
+        }.
+        \label{eq:dro_threshold_with_mismatch}
+    \end{equation}
+    This shows explicitly why good phase matching is essential: imperfect phase matching reduces the effective gain and raises the threshold.
+
+\subsection*{5. Relation to Pump Power}
+
+    The field amplitude $A_p$ used above is a complex electric-field amplitude. The corresponding pump intensity is proportional to $|A_p|^2$. For a plane wave in a medium of refractive index $n_p$, the intensity is
+    \begin{equation}
+        I_p
+        =
+        \frac{1}{2}
+        n_p\epsilon_0c
+        |A_p|^2.
+        \label{eq:intensity_field_relation}
+    \end{equation}
+    If the pump mode has an effective area $A_{\mathrm{eff}}$, then the pump power is
+    \begin{equation}
+        P_p
+        =
+        I_p A_{\mathrm{eff}}
+        =
+        \frac{1}{2}
+        n_p\epsilon_0c
+        A_{\mathrm{eff}}
+        |A_p|^2.
+        \label{eq:power_field_relation}
+    \end{equation}
+    Therefore, using Eq.~\eqref{eq:pump_amplitude_threshold_dro},
+    \begin{equation}
+        \boxed{
+        P_{\mathrm{th,DRO}}
+        =
+        \frac{
+            n_p\epsilon_0cA_{\mathrm{eff}}
+        }{
+            2
+        }
+        \frac{
+            \gamma_s\gamma_i
+        }{
+            L^2\kappa_s\kappa_i
+        }
+        }.
+        \label{eq:threshold_power_dro}
+    \end{equation}
+    This expression assumes perfect phase matching, single transverse-mode overlap, no pump depletion below threshold, and a pump-transparent cavity. In a real focused Gaussian interaction, the effective area and the nonlinear coupling must be replaced by the appropriate spatial overlap integral, as in the Boyd-Kleinman physics discussed in Exercise~1.
+
+\subsection*{6. Steady-State Behavior Above Threshold}
+
+    The linearized threshold calculation determines when oscillation begins. Above threshold, the undepleted-pump approximation cannot remain valid indefinitely, because the signal and idler fields extract energy from the pump. This is the same physical limitation mentioned by Saleh and Teich after Eqs.~(22.4-45)--(22.4-46): the hyperbolic growth of the parametric amplifier saturates once enough energy is drawn from the pump.
+
+    To describe the above-threshold regime, the pump equation must be restored:
+    \begin{equation}
+        \frac{dA_p}{dz}
+        =
+        i\kappa_p A_sA_i e^{-i\Delta kz},
+        \label{eq:pump_depletion_local}
+    \end{equation}
+    where the sign of the exponential depends on the phase convention used in the coupled-wave equations. Since the pump is not resonant in the DRO, it is not governed by a cavity storage equation of the same form as Eqs.~\eqref{eq:dro_dyn_s}--\eqref{eq:dro_dyn_i}; instead, its intracrystal value is set by the injected pump field and by single-pass depletion through the nonlinear medium.
+
+    Qualitatively, the steady-state behavior is:
+    \begin{itemize}
+        \item below threshold, $A_s=A_i=0$ is stable;
+        \item at threshold, parametric gain equals the signal/idler cavity losses;
+        \item above threshold, signal and idler grow until pump depletion clamps the effective intracrystal pump gain near its threshold value.
+    \end{itemize}
+    This pump clamping is the direct analog of gain saturation in a laser oscillator.
+
+\subsection*{7. Comparison with Singly, Doubly, and Triply Resonant Configurations}
+
+    Boyd's Sec.~2.9 gives a useful hierarchy for OPO threshold. For arbitrary amplitude losses $l_1,l_2$ of signal and idler, Boyd derives the round-trip self-consistency equations in Eqs.~(2.9.7a,b). Requiring both equations to be simultaneously satisfied gives Eq.~(2.9.8). In the low-loss DRO limit, this reduces to
+    \begin{equation}
+        g_{\mathrm{OPA}}^2L^2=l_1l_2,
+        \tag{Boyd Eq.~2.9.9}
+    \end{equation}
+    while the singly resonant oscillator (SRO), obtained by taking no feedback for the idler, has
+    \begin{equation}
+        g_{\mathrm{OPA}}^2L^2=2l_1.
+        \tag{Boyd Eq.~2.9.10}
+    \end{equation}
+    Thus the DRO has lower threshold than the SRO because both generated fields are fed back.
+
+    The present exercise asks instead for comparison between a \textbf{DRO with non-resonant pump} and a \textbf{triply resonant OPO} (TRO). In a TRO, the pump, signal, and idler are all resonant. The local nonlinear threshold condition inside the crystal is still
+    \begin{equation}
+        g_{\mathrm{OPA,int}}^2L^2
+        =
+        \gamma_s\gamma_i,
+        \label{eq:internal_threshold_same}
+    \end{equation}
+    because the signal and idler losses are still balanced by the intracavity parametric gain. The difference is that the intracavity pump amplitude is no longer equal to the externally injected pump amplitude.
+
+    Let the resonant pump buildup factor be defined by
+    \begin{equation}
+        B_p
+        =
+        \frac{
+            P_{p,\mathrm{int}}
+        }{
+            P_{p,\mathrm{in}}
+        }
+        =
+        \frac{
+            |A_{p,\mathrm{int}}|^2
+        }{
+            |A_{p,\mathrm{in}}|^2
+        }.
+        \label{eq:pump_buildup_definition}
+    \end{equation}
+    Then the external threshold power of the triply resonant OPO is reduced by this buildup:
+    \begin{equation}
+        \boxed{
+        P_{\mathrm{th,TRO}}
+        =
+        \frac{
+            P_{\mathrm{th,DRO}}
+        }{
+            B_p
+        }
+        }.
+        \label{eq:tro_threshold_general}
+    \end{equation}
+    This is the safest and most general comparison. The TRO has a lower external pump threshold because the pump field is resonantly enhanced inside the nonlinear crystal.
+
+    In the idealized limit of a resonant pump cavity with amplitude enhancement
+    \begin{equation}
+        A_{p,\mathrm{int}}
+        \simeq
+        \frac{2}{\gamma_p}
+        A_{p,\mathrm{in}},
+        \label{eq:amplitude_enhancement_simple}
+    \end{equation}
+    where $\gamma_p$ is the relevant amplitude loss/coupling parameter for the pump resonance, the buildup is
+    \begin{equation}
+        B_p
+        \simeq
+        \frac{4}{\gamma_p^2}.
+    \end{equation}
+    Under this additional approximation,
+    \begin{equation}
+        \boxed{
+        P_{\mathrm{th,TRO}}
+        \simeq
+        \frac{
+            \gamma_p^2
+        }{
+            4
+        }
+        P_{\mathrm{th,DRO}}
+        }.
+        \label{eq:tro_threshold_simple}
+    \end{equation}
+    Equivalently,
+    \begin{equation}
+        \frac{
+            P_{\mathrm{th,DRO}}
+        }{
+            P_{\mathrm{th,TRO}}
+        }
+        \simeq
+        \frac{4}{\gamma_p^2}.
+        \label{eq:dro_tro_ratio_simple}
+    \end{equation}
+
+    This last expression is useful as a scaling estimate, but it should not be presented as universal. It assumes that the pump is exactly on resonance, that the pump cavity is well mode-matched, that the loss parameter $\gamma_p$ includes the relevant input coupling convention, and that no extra instability or thermal detuning limits the buildup.
+
+\subsection*{8. Stability and Practical Consequences}
+
+    Saleh and Teich emphasize in Sec.~22.4 that the oscillation frequencies of an OPO must satisfy both:
+    \begin{equation}
+        \omega_p=\omega_s+\omega_i
+        \label{eq:energy_conservation}
+    \end{equation}
+    and the phase-matching condition. In the collinear case, this may be written schematically as
+    \begin{equation}
+        k_p=k_s+k_i,
+        \label{eq:phase_matching}
+    \end{equation}
+    or, equivalently, $n_p\omega_p=n_s\omega_s+n_i\omega_i$ when all waves are collinear. In addition, if a field is resonant, its frequency must coincide with a cavity longitudinal mode.
+
+    For the pump-transparent DRO considered here, only the signal and idler must satisfy cavity resonance conditions. For a TRO, the pump must also satisfy a cavity resonance condition. Thus, the TRO has a lower threshold, but it is more constrained:
+    \begin{itemize}
+        \item the signal must be resonant;
+        \item the idler must be resonant;
+        \item the pump must also be resonant;
+        \item energy conservation must still hold;
+        \item phase matching must still hold.
+    \end{itemize}
+    This additional pump-resonance constraint makes the TRO more sensitive to cavity-length drift, thermal changes, and acoustic noise. The DRO avoids the pump resonance condition, so its threshold is higher, but its operation is usually easier to stabilize than a truly triply resonant system.
+
+    The comparison can be summarized as follows:
+    \begin{center}
+    \begin{tabular}{c|c|c|c}
+        Configuration
+        &
+        Resonant fields
+        &
+        Threshold
+        &
+        Stability
+        \\
+        \hline
+        SRO
+        &
+        one of $(s,i)$
+        &
+        highest among SRO/DRO for same losses
+        &
+        usually most stable
+        \\
+        DRO
+        &
+        $s$ and $i$
+        &
+        lower than SRO
+        &
+        more constrained than SRO
+        \\
+        TRO
+        &
+        $p$, $s$, and $i$
+        &
+        lowest external pump threshold
+        &
+        most constrained
+    \end{tabular}
+    \end{center}
+
+    Therefore, the pump-transparent DRO represents a compromise: it gains the low threshold associated with simultaneous signal/idler feedback, while avoiding the extra resonance constraint imposed on the pump in a TRO.
+
+\subsection*{9. Laboratory Implications for Exercise 6}
+
+    The dynamical equations derived above imply the following experimentally relevant points.
+
+    \begin{itemize}
+        \item \textbf{Threshold is controlled by loss and nonlinear overlap.}
+        From Eq.~\eqref{eq:threshold_power_dro}, the threshold increases with the product $\gamma_s\gamma_i$ and decreases with $L^2\kappa_s\kappa_i$. Thus, lower cavity loss, longer effective interaction length, better phase matching, and better spatial overlap all reduce the threshold.
+
+        \item \textbf{Mode matching enters through the effective gain.}
+        The simple formula assumes perfect spatial overlap between pump, signal, and idler. In a real Gaussian-beam cavity, imperfect mode matching reduces the effective coupling coefficient. This can be represented by replacing
+        \[
+            \kappa_s\kappa_i
+            \rightarrow
+            \eta_{\mathrm{sp}}\kappa_s\kappa_i,
+        \]
+        where $0<\eta_{\mathrm{sp}}<1$ is a spatial-overlap efficiency. Since threshold scales as $1/\eta_{\mathrm{sp}}$, poor mode matching can rapidly push the threshold above the available pump power.
+
+        \item \textbf{The pump behavior at threshold should show depletion or clamping.}
+        Below threshold, the signal and idler fields are negligible. At threshold, the generated fields grow and begin to extract energy from the pump. Above threshold, the effective intracrystal pump gain tends to remain close to its threshold value while additional input power is converted into signal and idler output.
+
+        \item \textbf{The DRO is sensitive to simultaneous signal/idler resonance.}
+        Although the pump is not resonant, the signal and idler must both match cavity modes. This creates mode-selection and mode-hopping behavior. Saleh and Teich explicitly note that the DRO is more constrained than the SRO because both generated frequencies must coincide with resonator modes.
+    \end{itemize}
+
+    These points connect directly to the experimental report requested in Exercise~6: cavity alignment, mode matching, phase matching, diffraction losses, threshold power, pump depletion, and comparison between measured and theoretical threshold are all contained in the threshold condition
+    \[
+        g_{\mathrm{OPA}}^2L^2=\gamma_s\gamma_i.
+    \]
+
+\end{resolucao}

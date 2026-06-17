@@ -1,0 +1,147 @@
+\documentclass[twoside]{article}
+\usepackage{configuracoes}
+
+% ============================================================================
+% main.tex
+% ============================================================================
+% Objetivo:
+% Arquivo principal da lista de exercícios.
+% Aqui ficam os metadados da lista, escolhas locais de compilação e a ordem
+% dos arquivos de exercícios incluídos no documento.
+%
+% Diretriz de uso:
+% - o núcleo do template fica em configuracoes.sty;
+% - este arquivo deve concentrar apenas os dados e decisões da lista atual;
+% - os enunciados e resoluções devem ficar em arquivos separados (ex1.tex,
+%   ex2.tex, ...), para facilitar manutenção e reaproveitamento.
+% ============================================================================
+
+% ----------------------------------------------------------------------------
+% Idioma principal do documento
+% ----------------------------------------------------------------------------
+% O pacote babel já foi carregado no .sty com português e inglês disponíveis.
+% Como esta lista está escrita em inglês, explicitamos a língua principal aqui.
+% Em listas futuras, altere para \selectlanguage{portuguese} se necessário.
+\selectlanguage{english}
+
+% ----------------------------------------------------------------------------
+% Metadados da lista atual
+% ----------------------------------------------------------------------------
+% Ponto de personalização do usuário:
+% redefina abaixo apenas os dados desta lista. Assim, o template permanece
+% reutilizável sem exigir edição do arquivo configuracoes.sty.
+\renewcommand{\CodigoDisciplina}{PGF5473}
+\renewcommand{\NomeDisciplina}{Introduction to Nonlinear Optics}
+\renewcommand{\NumeroLista}{2}
+
+\renewcommand{\titulo}{\NomeDisciplina\ - Exercise Sheet \NumeroLista}
+\renewcommand{\professorLista}{Prof.\ Dr.\ Rafael Ferreira Pinto do Rego Barros}
+\renewcommand{\autorLista}{Guterman Rodrigues de Araujo Junior -- N\textsuperscript{o} USP 7990464}
+\renewcommand{\tituloPDF}{[2026s1] Introduction to Nonlinear Optics - Exercise Sheet 1}
+\renewcommand{\autorListaPDF}{Guterman Rodrigues de Araujo Junior -- No USP 7990464}
+\renewcommand{\assuntoPDF}{Nonlinear Optics - Exercise Sheet 1}
+\renewcommand{\instituicaoLista}{Instituto de F\'isica, Universidade de S\~ao Paulo - SP}
+\renewcommand{\dataLista}{20th June 2026}
+
+% Obs: Caso seu template use os comandos \newcommand definidos anteriormente:
+\newcommand{\tituloLista}{Exercise Sheet \NumeroLista}
+\newcommand{\disciplina}{\CodigoDisciplina\ - \NomeDisciplina}
+\newcommand{\professor}{\professorLista}
+\newcommand{\dataEntrega}{\dataLista}
+\newcommand{\instituicao}{\instituicaoLista}
+
+% ----------------------------------------------------------------------------
+% Controles locais de exibição
+% ----------------------------------------------------------------------------
+% O ambiente resolucao pode ser mostrado ou ocultado sem editar os arquivos dos
+% exercícios. Isso permite gerar, a partir da mesma base, uma versão com
+% soluções e outra apenas com os enunciados.
+\MostrarResolucoes
+% \OcultarResolucoes
+
+% ----------------------------------------------------------------------------
+% Layout local do documento
+% ----------------------------------------------------------------------------
+% Observação importante:
+% o uso de \begin{multicols*}{1} gerava warning e, na prática, fazia o pacote
+% forçar duas colunas. Como a intenção desta lista é uma coluna, o ambiente foi
+% removido. Se no futuro você quiser duas colunas de fato, use multicols com 2
+% de maneira explícita e consciente.
+
+
+
+
+
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  sorting=nyt
+]{biblatex}
+
+\addbibresource{referencias.bib}
+
+\DeclareCiteCommand{\authorlinkcite}
+  {}
+  {\printtext[bibhyperref]{\printnames{labelname}}}
+  {\multicitedelim}
+  {}
+
+
+
+
+\begin{document}
+    
+    \maketitle
+    \thispagestyle{fancy}
+    
+    % \tableofcontents
+    % Ative apenas se fizer sentido para listas longas. Em listas curtas, o custo
+    % visual normalmente não compensa.
+    
+    % ----------------------------------------------------------------------------
+    % Exercícios da lista
+    % ----------------------------------------------------------------------------
+    % Regra prática:
+    % - cada arquivo de exercício deve conter apenas conteúdo;
+    % - a ordem da lista é definida aqui;
+    % - para adicionar novos exercícios, basta criar novos arquivos e incluí-los.
+    
+    \newif\ifusarDuasColunas
+    % \usarDuasColunasfalse
+    \usarDuasColunastrue
+    
+    \ifusarDuasColunas
+        \begin{multicols*}{2}
+    \fi
+        
+        % \twocolumn
+        \input{ex1}
+        %\onecolumn
+        
+        \newpage
+        \input{ex2}
+        
+        \newpage
+        \input{ex3}
+        
+        \newpage
+        \input{ex4}
+        
+        \newpage
+        \input{ex5}
+        
+        \printbibliography
+        
+        
+        
+    \ifusarDuasColunas
+        \end{multicols*}
+    \fi
+    
+    \appendix
+        
+    
+    
+    
+    
+\end{document}

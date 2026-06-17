@@ -1,0 +1,539 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{configuracoes}[2026/04/30 v0.2 Template base para listas de exercicios]
+
+% ============================================================================
+% configuracoes.sty
+% ============================================================================
+% Objetivo:
+% Centralizar pacotes, estilos, ambientes e pontos de personalizacao do
+% template de listas de exercicios.
+%
+% Diretriz de projeto:
+% - preservar compatibilidade com o fluxo atual;
+% - melhorar a organizacao interna;
+% - reduzir warnings evitaveis;
+% - manter e expandir a documentacao tecnica do arquivo.
+% ============================================================================
+
+% ----------------------------------------------------------------------------
+% Compatibilidade de engine
+% ----------------------------------------------------------------------------
+% O bloco abaixo evita warnings desnecessarios entre pdfLaTeX e LuaLaTeX/XeLaTeX.
+% Em pdfLaTeX, inputenc/fontenc continuam relevantes. Em engines modernas,
+% UTF-8 ja e nativo, entao essas configuracoes nao devem ser forçadas.
+\RequirePackage{iftex}
+\ifPDFTeX
+    \RequirePackage[utf8]{inputenc}
+    \RequirePackage[T1]{fontenc}
+\fi
+
+% ----------------------------------------------------------------------------
+% Layout e idioma
+% ----------------------------------------------------------------------------
+\RequirePackage[inner=20mm,outer=15mm,top=20mm,bottom=35mm,columnsep=20pt]{geometry}
+% \RequirePackage{a4wide} % aumenta a largura da area tipografica em papel A4
+% \RequirePackage[margin=2.5cm]{geometry} % interface simples e flexivel para margens
+
+\RequirePackage[portuguese, english]{babel}
+% Idiomas disponiveis no documento.
+% Atencao: no babel, a ultima lingua da lista tende a se tornar a lingua ativa.
+% Se a lista estiver majoritariamente em ingles, selecione explicitamente no
+% arquivo principal com \selectlanguage{english}.
+
+\linespread{1.05} % ajuste sutil de espacamento entre linhas
+\RequirePackage[sc]{mathpazo}
+% Familia tipografica baseada em Palatino, com matematica compativel.
+% Mantida por compatibilidade com o estilo atual do documento.
+
+\RequirePackage{microtype} % refinamento tipografico e melhor quebra de linha
+\RequirePackage{indentfirst} % indenta o primeiro paragrafo apos titulos/secoes
+
+%%%% BLOCO DE TESTES E DIAGNOSTICO %%%%%
+% Estes recursos ajudam a validar espacamento, margens e comportamento visual
+% durante o desenvolvimento do template. Em documentos finais, o ideal e
+% mante-los comentados para reduzir ruido e dependencias.
+% {
+    % \RequirePackage{rotating}
+    % \RequirePackage[marginal]{showlabels} % mostra labels nas figuras - COMENTAR para desativar
+    %     \renewcommand{\showlabelfont}{\tiny\color{red}}
+    %     \renewcommand{\showlabelsetlabel}[1]
+    %         {\begin{turn}{60}\showlabelfont #1\end{turn}}
+    % \RequirePackage{showkeys} % mostra as labels nas figuras
+    %     \renewcommand*\showkeyslabelformat[1]{% ajusta em uma caixinha o texto das labels
+    %     \fbox{\parbox[t]{\marginparwidth}{\raggedright\normalfont\tiny\ttfamily#1}}}
+    % \RequirePackage{lipsum} % gerador de Lorem Ipsum para teste de paginacao
+    % \RequirePackage{showframe} % visualiza a area tipografica e as margens
+% } %%%% BLOCO DE TESTES E DIAGNOSTICO %%%%%
+
+% ----------------------------------------------------------------------------
+% Figuras, tabelas, cores e composicao visual
+% ----------------------------------------------------------------------------
+\RequirePackage{graphicx}
+% Fornece a interface padrao de inclusao de imagens com \includegraphics.
+\graphicspath{{./images/}}
+% Pasta padrao para imagens. Ponto de personalizacao:
+% altere este caminho se o projeto passar a usar outra estrutura de diretorios.
+
+% \RequirePackage[export]{adjustbox} % para cropar imagem; permite usar adjincludegraphics e acessar \width, \height, \depth e \totalheight
+
+\RequirePackage{float} % posicionamento mais controlado de figuras/tabelas no texto
+\RequirePackage[hang, small,labelfont=bf,up,textfont=it,up]{caption}
+% Customizacao de legendas.
+% "up" significa upright shape, isto e, texto vertical/nao italico na parte indicada.
+
+\RequirePackage{subcaption}
+% Suporte a subfiguras.
+% Referencia util: https://www.overleaf.com/project/632ce028fd197512bc9ec5e4
+
+\RequirePackage{booktabs}
+% Melhora a qualidade tipografica de tabelas.
+% Evita linhas pesadas e incentiva uma composicao mais limpa.
+
+\RequirePackage[table,xcdraw]{xcolor}
+% Cores em texto, blocos e tabelas.
+% table = habilita recursos de cor em tabelas.
+% xcdraw = adiciona nomes e recursos adicionais de cores, util em tabelas exportadas.
+
+\RequirePackage{multicol}
+% Ambiente multicols para texto em multiplas colunas.
+% Observacao pratica: usar multicols*{1} nao faz sentido e gera warning.
+% Em uma coluna, prefira simplesmente nao usar o ambiente.
+
+\RequirePackage{animate} % animacao de imagens, tipo GIF em PDF
+\RequirePackage{svg}
+% Suporte a SVG.
+% Em alguns ambientes (especialmente locais), pode exigir Inkscape ou shell-escape.
+% Em Overleaf, verificar compatibilidade do projeto antes de depender deste recurso.
+
+\newcommand{\fpsAnimacao}{1}
+% MINHA VARIAVEL para o pacote de animacao.
+% Ponto de personalizacao do usuario:
+% controla a taxa de quadros das animacoes. Valores maiores aceleram a
+% reproducao e podem aumentar o peso final do PDF.
+
+\newcommand{\posicaoSubFiguras}{t}
+% Lista de posicoes das Subfiguras
+% {
+%     t - top alignment
+%     c - centre alignment
+%     b - bottom alignment
+%     espacemento lateral: \hspace{} ou \quad ou \qquad
+%     fonte - https://tex.stackexchange.com/questions/333249/controlling-subfigure-captions-and-subfigure-placement
+% }
+% Ponto de personalizacao do usuario:
+% altere este valor quando quiser mudar o alinhamento vertical padrao de grupos
+% de subfiguras na mesma linha.
+
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+% Escala uma expressao matematica mantendo estilo de display.
+% Fonte: https://tex.stackexchange.com/a/630598
+
+\newcommand{\importante}{ - IMPORTANTE: Lorem Ipsum}
+% Macro auxiliar de destaque textual.
+% Ponto de personalizacao do usuario:
+% substitua o texto padrao por um marcador recorrente do seu fluxo de escrita,
+% se fizer sentido no projeto.
+
+% ----------------------------------------------------------------------------
+% Matematica e notacao cientifica
+% ----------------------------------------------------------------------------
+\RequirePackage{amsmath} % recursos centrais para escrita matematica
+\RequirePackage{amssymb} % simbolos matematicos adicionais
+\RequirePackage{mathtools} % extensao do amsmath com ferramentas mais finas
+\RequirePackage{tensor} % notacao de tensores
+\RequirePackage{siunitx}
+% Facilita escrita consistente de unidades, angulos e grandezas numericas.
+% Manual: https://linorg.usp.br/CTAN/macros/latex/contrib/siunitx/siunitx.pdf
+
+% ----------------------------------------------------------------------------
+% Listas, texto corrido e elementos auxiliares
+% ----------------------------------------------------------------------------
+\RequirePackage{paralist}
+% Fornece variantes compactas de enumerate e itemize, inclusive em paragrafo.
+
+\RequirePackage{abstract}
+% Permite controlar melhor a composicao do abstract, inclusive em cenarios com
+% documento em duas colunas.
+\renewcommand{\abstractnamefont}{\normalfont\bfseries}
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape}
+
+\RequirePackage{lettrine}
+% Inicia o texto com a primeira letra ampliada por varias linhas.
+% Exemplo: \lettrine[lraise=0.1, nindent=0em, slope=-.5em]{E}{xemplo}
+
+% \RequirePackage{comment} % inclui/exclui seletivamente blocos de texto
+
+% ----------------------------------------------------------------------------
+% Listings / codigo-fonte
+% ----------------------------------------------------------------------------
+\RequirePackage{listings}
+
+% --- Configuracao de cores para o codigo ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.97}
+\definecolor{corResolucao}{rgb}{0,0,1}
+\definecolor{corIgnorado}{gray}{0.45}
+
+% --- Estilo customizado para o codigo Python ---
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\fontsize{3}{0}\selectfont\ttfamily, % fonte pequena e monoespacada
+    breakatwhitespace=false,
+    breaklines=true,                  % habilita quebra de linha automatica
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=Python
+}
+
+% Define o estilo 'mystyle' como padrao
+\lstset{style=mystyle}
+
+% ----------------------------------------------------------------------------
+% Controle de warnings e formatacao de titulos
+% ----------------------------------------------------------------------------
+\RequirePackage{silence}
+    \WarningFilter{titlesec}{Non standard sectioning command}
+    % Warning suprimido:
+    % Non standard sectioning command \section detected. Using default spacing and no format
+    %
+    \WarningFilter{paralist}{Incorrect label}
+
+\RequirePackage{titlesec}
+% Customizacao visual de section/subsection/subsubsection.
+% Mantem a estrutura atual, mas deixa a configuracao concentrada em um unico lugar.
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\Roman{section}.\arabic{subsection}}
+\renewcommand\thesubsubsection{\Roman{section}.\arabic{subsection}.\alph{subsubsection}}
+
+% EXEMPLO {
+    % \titleformat
+    % {\chapter} % command
+    % [display] % shape
+    % {\bfseries\Large\itshape} % format
+    % {Story No. \ \thechapter} % label
+    % {0.5ex} % sep
+    % {
+    %     \rule{\textwidth}{1pt}
+    %     \vspace{1ex}
+    %     \centering
+    % } % before-code
+    % [
+    % \vspace{-0.5ex}%
+    % \rule{\textwidth}{0.3pt}
+    % ] % after-code
+
+
+    % \titleformat{\section}[wrap]
+    % {\normalfont\bfseries}
+    % {\thesection.}{0.5em}{}
+
+    % \titlespacing{\section}{12pc}{1.5ex plus .1ex minus .2ex}{1pc}
+% } de titleformat
+\titleformat
+    {\section} % command
+    [block] % shape
+    {\large\scshape\centering} % format
+    {\thesection} % label
+    {1em} % sep
+    {
+        % \rule{\textwidth}{1pt}
+        % \vspace{1ex}
+        % \centering
+    } % before-code
+    [
+        % \vspace{-0.5ex}%
+        % \rule{\textwidth}{0.3pt}
+    ] % after-code
+
+\titleformat
+    {\subsection}
+    [block]
+    {} % antes estava apenas o \large
+    {\thesubsection}
+    {1em}
+    {\bfseries} % http://tug.ctan.org/tex-archive/macros/latex/contrib/titlesec/titlesec.pdf pag 21
+
+\titleformat
+    {\subsubsection}
+    [block]
+    {} % antes estava apenas o \large
+    {\thesubsubsection}
+    {1em}
+    {}
+
+% ----------------------------------------------------------------------------
+% Cabecalho, rodape e dados variaveis da lista
+% ----------------------------------------------------------------------------
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+% \fancyhead[C]{4302214 - Fisica Experimental IV $\bullet$ Otica fisica - polarizacao $\bullet$ Grupo T17} % cabecalho e rodape
+\fancyfoot[RO,LE]{\thepage}
+\setlength{\headheight}{14pt}
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+% Ambiente util para agrupar conteudo de figura como um bloco unico de largura total.
+
+% Dados da capa
+% {
+% O bloco abaixo contem defaults para manter compatibilidade imediata com o uso
+% atual. A ideia, daqui para frente, e que o usuario sobreponha estes valores no
+% arquivo principal com \renewcommand antes de \begin{document}, evitando editar
+% o .sty a cada nova lista.
+\newcommand{\CodigoDisciplina}{PGF5001}
+\newcommand{\NomeDisciplina}{Mecanica Quantica I (2025)}
+\newcommand{\NumeroLista}{12}
+
+\newcommand{\titulo}{[2025s2] Quantum Mechanics 1 - List 12}
+\newcommand{\professorLista}{Prof. Dr. Matthew Luzum}
+\newcommand{\autorLista}{Guterman Rodrigues de Araujo Junior -- N\textsuperscript{o} USP 7990464}
+\newcommand{\instituicaoLista}{Instituto de Fisica, Universidade de Sao Paulo - SP}
+\newcommand{\dataLista}{24th November 2025}
+
+% Metadados textuais puros para o PDF.
+% Estes campos devem evitar comandos de formatacao
+% (por exemplo, \textsuperscript, \textsc, formulas, etc.),
+% pois o hyperref converte essas strings para os metadados internos do PDF.
+\newcommand{\tituloPDF}{[2025s2] Quantum Mechanics 1 - List 12}
+\newcommand{\autorListaPDF}{Guterman Rodrigues de Araujo Junior -- No USP 7990464}
+\newcommand{\assuntoPDF}{Lista de exercicios}
+
+% Macro interna para aplicar metadados no titulo e no cabecalho.
+% Ela e executada automaticamente no inicio do documento. Isso permite que o
+% usuario redefina os campos acima no main.tex sem precisar mexer no pacote.
+\newcommand{\AplicarDadosLista}{%
+    \title{\vspace{-9mm}\fontsize{18pt}{20pt}\selectfont\textbf{\titulo}}%
+    \author{%
+        \large\textsc{\professorLista}\\
+        \large \autorLista\\[2mm]
+        \large \instituicaoLista
+    }%
+    \date{\dataLista}%
+    \fancyhead[L]{\CodigoDisciplina}%
+    \fancyhead[C]{\NomeDisciplina}%
+    \fancyhead[R]{Lista \NumeroLista}%
+}
+\AtBeginDocument{\AplicarDadosLista}
+% }
+
+% ----------------------------------------------------------------------------
+% Ambientes do template
+% ----------------------------------------------------------------------------
+\RequirePackage{xparse}
+
+% Controle global para exibicao das resolucoes.
+% Uso tipico no main.tex:
+%   \OcultarResolucoes
+% ou
+%   \MostrarResolucoes
+\newif\ifmostrarresolucoes
+\mostrarresolucoestrue
+\newcommand{\OcultarResolucoes}{\mostrarresolucoesfalse}
+\newcommand{\MostrarResolucoes}{\mostrarresolucoestrue}
+
+\NewDocumentEnvironment{resolucao}{ O{Resolucao} +b }
+{
+    \ifmostrarresolucoes
+        \par
+        \medskip
+        \noindent\textbf{#1}\par
+        \begingroup
+        \color{corResolucao}
+        % \fontfamily{tgcursor}
+        % \fontfamily{qag}
+        % \fontfamily{phv}
+        #2
+        \par
+        \endgroup
+        \vspace{\baselineskip}
+    \fi
+}
+{}
+
+\NewDocumentEnvironment{ignorado}{ O{} +b }
+{
+    \par
+    \medskip
+    \begingroup
+    \color{corIgnorado}
+    % \fontfamily{tgcursor}
+    % \fontfamily{qag}
+    % \fontfamily{phv}
+    #2
+    \par
+    \endgroup
+    \vspace{\baselineskip}
+}
+{}
+
+% Ambiente de exercicio com identificador textual livre.
+% Esta e a interface mais flexivel para o caso em que o exercicio nao segue uma
+% numeracao puramente sequencial.
+%
+% Exemplos de uso:
+%   \begin{exercicio}
+%   \begin{exercicio}[Exercicio 3]
+%   \begin{exercicio}[Boyd, Nonlinear Optics, cap. 1, problema 3]
+%   \begin{exercicio}[Capitulo 22.3, secao D]
+\newcounter{exercicio}
+\newcommand{\nomeexercicio}{Exercicio}
+
+\NewDocumentEnvironment{exercicio}{ O{} +b }
+{
+    \par\medskip
+    \refstepcounter{exercicio}
+    \noindent\textbf{%
+        \if\relax\detokenize{#1}\relax
+            \nomeexercicio~\theexercicio
+        \else
+            #1
+        \fi
+    }\par
+    \smallskip
+    #2
+    \par\medskip
+}
+{}
+
+% Interface estruturada para exercicios com metadados.
+% Esta alternativa e mais adequada quando o projeto precisa manter padrao entre
+% fonte, capitulo, secao, problema, titulo e label.
+%
+% Exemplo de uso:
+% \begin{exercicioinfo}[
+%   fonte={Boyd, Nonlinear Optics},
+%   capitulo={1},
+%   secao={3},
+%   problema={5},
+%   titulo={Driven harmonic oscillator},
+%   label={ex:boyd-1-3-5}
+% ]
+%   Enunciado...
+% \end{exercicioinfo}
+\ExplSyntaxOn
+\tl_new:N \l__config_fonte_tl
+\tl_new:N \l__config_capitulo_tl
+\tl_new:N \l__config_secao_tl
+\tl_new:N \l__config_problema_tl
+\tl_new:N \l__config_titulo_tl
+\tl_new:N \l__config_label_tl
+
+\keys_define:nn { configuracoes/exercicio }
+{
+    fonte    .tl_set:N = \l__config_fonte_tl,
+    capitulo .tl_set:N = \l__config_capitulo_tl,
+    secao    .tl_set:N = \l__config_secao_tl,
+    problema .tl_set:N = \l__config_problema_tl,
+    titulo   .tl_set:N = \l__config_titulo_tl,
+    label    .tl_set:N = \l__config_label_tl,
+}
+
+\cs_new_protected:Npn \__config_exercicio_reset:
+{
+    \tl_clear:N \l__config_fonte_tl
+    \tl_clear:N \l__config_capitulo_tl
+    \tl_clear:N \l__config_secao_tl
+    \tl_clear:N \l__config_problema_tl
+    \tl_clear:N \l__config_titulo_tl
+    \tl_clear:N \l__config_label_tl
+}
+
+\cs_new:Npn \__config_exercicio_cabecalho:
+{
+    \tl_if_blank:NF \l__config_fonte_tl    { \textit{\l__config_fonte_tl} }
+    \tl_if_blank:NF \l__config_capitulo_tl { \ifhmode\space\fi -- cap.~\l__config_capitulo_tl }
+    \tl_if_blank:NF \l__config_secao_tl    { \ifhmode\space\fi -- sec.~\l__config_secao_tl }
+    \tl_if_blank:NF \l__config_problema_tl { \ifhmode\space\fi -- prob.~\l__config_problema_tl }
+    \tl_if_blank:NF \l__config_titulo_tl   { \ifhmode\space\fi -- \l__config_titulo_tl }
+}
+
+\NewDocumentEnvironment{exercicioinfo}{ O{} +b }
+{
+    \par\medskip
+    \refstepcounter{exercicio}
+    \__config_exercicio_reset:
+    \keys_set:nn { configuracoes/exercicio } { #1 }
+    \noindent\textbf{\nomeexercicio~\theexercicio}\par
+    \smallskip
+    \noindent\__config_exercicio_cabecalho:\par
+    \tl_if_blank:NF \l__config_label_tl { \label{\l__config_label_tl} }
+    \smallskip
+    #2
+    \par\medskip
+}
+{}
+\ExplSyntaxOff
+
+% % Formatting an environment
+% % https://tex.stackexchange.com/a/435487
+% %%%%%  environment definition begins %%%%%
+% \newcounter{example}[chapter] % counter for example
+% \newenvironment{example}      % name of environment
+%  [1]                          % number of arguments for the environment
+%  [Default value of argument if none provided]
+% {\refstepcounter{example}     % permite usar \label
+%  \par                         % starts the example in a new paragraph
+% \textbf{Example~\thechapter.\theexample } % how the example should look
+% \textit{#1}                   % argumento adicional em italico
+%
+%                               % all the codes here onwards specify the
+%                               % properties of the body of example
+%
+% \fontfamily{pcr} \selectfont  % font for body of example
+% \leftskip=1em  \rightskip=2em % indentation for the body
+% \par                          % the body of example starts in a new paragraph
+% }
+% {\par                  % new paragraph when the body of example ends
+% \vspace{\baselineskip} % additional vertical spacing to
+%                        % show that example has ended
+% \noindent              % stop anymore indentation
+%  }
+% %%%%%  environment definition ends %%%%%
+
+% ----------------------------------------------------------------------------
+% Hyperref
+% ----------------------------------------------------------------------------
+% Carregado perto do final para reduzir conflitos com outros pacotes que alteram
+% titulos, captions e referencias.
+\RequirePackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black,
+    pdftitle={\tituloPDF},
+    pdfauthor={\autorListaPDF},
+    pdfsubject={\assuntoPDF}
+}
+
+% ----------------------------------------------------------------------------
+% Blocos historicos / pacotes opcionais atualmente desativados
+% ----------------------------------------------------------------------------
+% \RequirePackage{minitoc}
+% Mini Table of Contents, isto e, lista de conteudo local.
+% Mantido apenas como referencia historica/documental.
+% No estado atual do template, ele foi desativado porque costuma gerar warnings
+% com a combinacao titlesec + hyperref e nao traz beneficio direto para listas
+% de exercicios curtas.
+
+% \RequirePackage{tgbonum} % FONTFAMILY - https://www.overleaf.com/learn/latex/Font_typefaces
+
+% How to colour multiple paragraphs?
+% https://tex.stackexchange.com/a/49912

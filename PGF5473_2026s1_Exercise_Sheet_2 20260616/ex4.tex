@@ -1,0 +1,663 @@
+% ============================================================================
+% ex4.tex
+% ============================================================================
+% Exercício individual da lista.
+% Este arquivo deve conter apenas o conteúdo do exercício e, quando desejado,
+% sua resolução. Não deve carregar pacotes nem redefinir configurações globais.
+%
+% Interface adotada neste exemplo:
+% - ambiente `exercicio` com identificador textual livre;
+% - ambiente `resolucao` para a solução;
+% - subseções internas apenas para organizar a exposição.
+% ============================================================================
+
+\begin{exercicio}[Problem 4 --- Resonance Frequencies of an Optical Resonator]
+Consider an optical resonator with length $L$ and mirrors of curvature radii $R_{1}$ and $R_{2}$.
+
+\begin{enumerate}[a)]
+\item Show that the resonance frequencies are given by:
+$[\nu_{mnq} = \frac{c}{2L} \left[ q + \frac{1}{\pi} (m+n+1) \arccos\left(\pm\sqrt{g_{1}g_{2}}\right) \right]]$,
+where $g_{j} = 1 - L/R_{j}$ for $j=1,2$.
+\item Discuss how the resonance frequencies of different spatial modes are separated according to the cavity geometry.
+\end{enumerate}
+\end{exercicio}
+
+\begin{resolucao}[Solution]
+
+\subsection*{(a) Derivation of the Resonance Frequencies}
+
+    The starting point is the wave-optics treatment of spherical-mirror resonators in \textbf{Chapter 11 of \authorlinkcite{Saleh}}, specifically \textbf{Section 11.2, Spherical-Mirror Resonators}. Saleh and Teich first show that a Gaussian beam can be self-consistently fitted to a pair of spherical mirrors if the wavefront curvature of the Gaussian beam matches the mirror curvature at the mirror positions. This is developed in Sec.~11.2B using the Gaussian-beam parameters previously introduced in Sec.~3.1: the beam radius $W(z)$, the radius of curvature $R(z)$, and the Rayleigh range $z_0$, which appear again as Eqs.~(11.2-8)--(11.2-10).
+
+    The resonance-frequency calculation then follows in Sec.~11.2C. Saleh and Teich use the Gaussian-beam phase from Eq.~(3.1-23) and rewrite it for the resonator geometry in Eq.~(11.2-25). For Hermite-Gaussian modes, the same argument is extended in Sec.~11.2D using the Gouy-phase dependence already obtained in Sec.~3.3, especially Eq.~(3.3-10). The final result for Hermite-Gaussian resonator modes is given in Saleh and Teich's Eq.~(11.2-33). The derivation below follows exactly that logic, but rewrites the result using the $g$-parameters requested in the exercise.
+
+    Throughout this derivation, I assume that the cavity is empty or air-filled, so that the wave phase velocity is approximately $c$. If the resonator were filled by a medium of refractive index $n_{\mathrm{med}}$, the factor $c$ should be replaced by $c/n_{\mathrm{med}}$.
+
+    \paragraph*{Step 1: Round-Trip Phase Condition}
+        For an optical field to be a resonator mode, it must reproduce itself after a full round trip. In other words, after propagating from mirror 1 to mirror 2 and back to mirror 1, the field must return to the same transverse distribution and the accumulated phase must differ from the original phase only by an integer multiple of $2\pi$.
+
+        Saleh and Teich state this condition explicitly in Sec.~11.2C: the beam must retrace its amplitude and phase after one round trip. In their notation, the round-trip phase condition for the fundamental Gaussian mode is written just before Eq.~(11.2-30). For higher-order Hermite-Gaussian modes, the same reasoning is repeated in Sec.~11.2D, leading to Eq.~(11.2-32).
+
+        The phase of a Hermite-Gaussian mode $\mathrm{HG}_{m,n}$ propagating along the cavity axis may be written, using the notation of Sec.~3.3 of \authorlinkcite{Saleh}, as
+        \begin{equation}
+            \Phi(x,y,z)
+            =
+            kz
+            -
+            (m+n+1)\zeta(z)
+            +
+            \frac{k(x^2+y^2)}{2R(z)}.
+            \label{eq:total_phase}
+        \end{equation}
+        This is the same phase structure contained in Saleh and Teich's Eq.~(3.3-10), where the Gouy phase is multiplied by the factor associated with the transverse order of the Hermite-Gaussian mode. On the optical axis, $x=y=0$, the curvature term vanishes, and the phase becomes
+        \begin{equation}
+            \Phi(0,0,z)
+            =
+            kz
+            -
+            (m+n+1)\zeta(z).
+            \label{eq:axis_phase_hg}
+        \end{equation}
+        This is the same content as Saleh and Teich's Eq.~(11.2-31), which gives the on-axis phase of a Hermite-Gaussian resonator mode.
+
+        Let the two mirrors be located at $z_1$ and $z_2$, with
+        \begin{equation}
+            L=z_2-z_1.
+        \end{equation}
+        The single-pass on-axis phase shift from mirror 1 to mirror 2 is therefore
+        \begin{equation}
+            \Delta\Phi_{\mathrm{pass}}
+            =
+            kL
+            -
+            (m+n+1)
+            \left[
+                \zeta(z_2)-\zeta(z_1)
+            \right].
+            \label{eq:single_pass_phase}
+        \end{equation}
+        Define the Gouy-phase change between the two mirrors as
+        \begin{equation}
+            \Delta\zeta
+            =
+            \zeta(z_2)-\zeta(z_1).
+            \label{eq:delta_zeta_definition}
+        \end{equation}
+        This is the same quantity denoted by Saleh and Teich as $\Delta C$ in Eq.~(11.2-29).
+
+        For a complete round trip, the same phase shift is accumulated twice. Thus the round-trip resonance condition is
+        \begin{equation}
+            2kL
+            -
+            2(m+n+1)\Delta\zeta
+            =
+            2\pi q,
+            \qquad
+            q\in\mathbb{Z}.
+            \label{eq:round_trip_condition}
+        \end{equation}
+        This is the same form as Saleh and Teich's Eq.~(11.2-32), after replacing their transverse indices by $(m,n)$.
+
+        Dividing Eq.~\eqref{eq:round_trip_condition} by $2$ gives
+        \begin{equation}
+            kL
+            -
+            (m+n+1)\Delta\zeta
+            =
+            \pi q.
+            \label{eq:phase_resonance}
+        \end{equation}
+        Since
+        \begin{equation}
+            k=\frac{2\pi\nu}{c},
+        \end{equation}
+        Eq.~\eqref{eq:phase_resonance} becomes
+        \begin{equation}
+            \frac{2\pi\nu L}{c}
+            -
+            (m+n+1)\Delta\zeta
+            =
+            \pi q.
+        \end{equation}
+        Solving for $\nu$, we obtain the general resonance condition
+        \begin{equation}
+            \nu_{mnq}
+            =
+            \frac{c}{2L}
+            \left[
+                q
+                +
+                \frac{1}{\pi}
+                (m+n+1)\Delta\zeta
+            \right].
+            \label{eq:nu_general}
+        \end{equation}
+        This is the same structure as Saleh and Teich's Eq.~(11.2-33), with
+        \[
+            \nu_F=\frac{c}{2L}
+        \]
+        and with $\Delta\zeta$ playing the role of their $\Delta C$.
+
+        The remaining task is to express $\Delta\zeta$ in terms of the resonator geometry, i.e. in terms of $R_1$, $R_2$, and $L$, or equivalently in terms of $g_1$ and $g_2$.
+
+    \paragraph*{Step 2: Boundary Conditions at the Spherical Mirrors}
+        The Gaussian beam fitted to the resonator must have wavefronts coincident with the mirror surfaces. This is the key physical boundary condition in Saleh and Teich's Sec.~11.2B: a Gaussian beam reflected from a spherical mirror retraces itself if the radius of curvature of the Gaussian wavefront matches the radius of curvature of the mirror.
+
+        Let the waist of the Gaussian beam be at $z=0$. The Gaussian-beam radius of curvature is
+        \begin{equation}
+            R(z)
+            =
+            z
+            \left[
+                1+
+                \left(
+                    \frac{z_R}{z}
+                \right)^2
+            \right]
+            =
+            z+\frac{z_R^2}{z}.
+            \label{eq:gaussian_curvature}
+        \end{equation}
+        This is Saleh and Teich's Gaussian-beam curvature formula from Eq.~(3.1-9), reused in the resonator discussion as Eq.~(11.2-9).
+
+        We choose the sign convention in which the left mirror is located at $z_1<0$ and the right mirror is located at $z_2>0$. The wavefront is converging on the left side of the waist and diverging on the right side, so its algebraic radius of curvature is negative at $z_1$ and positive at $z_2$. If $R_1$ and $R_2$ denote the positive curvature radii of the two concave mirrors facing into the cavity, the matching conditions are
+        \begin{align}
+            R(z_1)
+            &=
+            z_1+\frac{z_R^2}{z_1}
+            =
+            -R_1,
+            \label{eq:left_mirror_match}
+            \\
+            R(z_2)
+            &=
+            z_2+\frac{z_R^2}{z_2}
+            =
+            R_2.
+            \label{eq:right_mirror_match}
+        \end{align}
+        Equivalently,
+        \begin{align}
+            z_1^2+z_R^2
+            &=
+            -R_1z_1,
+            \label{eq:left_mirror_relation}
+            \\
+            z_2^2+z_R^2
+            &=
+            R_2z_2.
+            \label{eq:right_mirror_relation}
+        \end{align}
+
+        The standard resonator $g$-parameters are
+        \begin{equation}
+            g_1=1-\frac{L}{R_1},
+            \qquad
+            g_2=1-\frac{L}{R_2}.
+            \label{eq:g_parameters}
+        \end{equation}
+        These are the parameters used in the statement of the exercise. They are useful because the stability and modal spectrum of a spherical-mirror resonator can be expressed compactly in terms of the product $g_1g_2$.
+
+    \paragraph*{Step 3: Gouy Phase Between the Mirrors}
+        The Gaussian-beam Gouy phase is
+        \begin{equation}
+            \zeta(z)
+            =
+            \arctan\left(\frac{z}{z_R}\right),
+            \label{eq:gouy_phase}
+        \end{equation}
+        corresponding to Saleh and Teich's function $C(z)$ in Eq.~(3.1-10) and in the resonator formulas of Sec.~11.2C.
+
+        Therefore,
+        \begin{equation}
+            \Delta\zeta
+            =
+            \arctan\left(\frac{z_2}{z_R}\right)
+            -
+            \arctan\left(\frac{z_1}{z_R}\right).
+            \label{eq:gouy_difference}
+        \end{equation}
+        To connect this with the cavity geometry, compute the cosine of this difference:
+        \begin{equation}
+            \cos(\Delta\zeta)
+            =
+            \cos\left[
+                \arctan\left(\frac{z_2}{z_R}\right)
+                -
+                \arctan\left(\frac{z_1}{z_R}\right)
+            \right].
+        \end{equation}
+        Using
+        \[
+            \cos(\alpha-\beta)
+            =
+            \cos\alpha\cos\beta+\sin\alpha\sin\beta
+        \]
+        with
+        \[
+            \alpha=\arctan\left(\frac{z_2}{z_R}\right),
+            \qquad
+            \beta=\arctan\left(\frac{z_1}{z_R}\right),
+        \]
+        gives
+        \begin{equation}
+            \cos(\Delta\zeta)
+            =
+            \frac{
+                z_R^2+z_1z_2
+            }{
+                \sqrt{z_R^2+z_1^2}
+                \sqrt{z_R^2+z_2^2}
+            }.
+            \label{eq:cos_delta_zeta}
+        \end{equation}
+
+        The denominator can be simplified using the mirror-matching conditions \eqref{eq:left_mirror_relation} and \eqref{eq:right_mirror_relation}:
+        \begin{equation}
+            \sqrt{z_R^2+z_1^2}
+            =
+            \sqrt{-R_1z_1},
+            \qquad
+            \sqrt{z_R^2+z_2^2}
+            =
+            \sqrt{R_2z_2}.
+            \label{eq:denominator_simplification}
+        \end{equation}
+        The waist position and Rayleigh range may be expressed in terms of the $g$-parameters as
+        \begin{align}
+            z_1
+            &=
+            \frac{
+                -L g_2(1-g_1)
+            }{
+                g_1+g_2-2g_1g_2
+            },
+            \label{eq:z1_g_parameters}
+            \\
+            z_2
+            &=
+            \frac{
+                L g_1(1-g_2)
+            }{
+                g_1+g_2-2g_1g_2
+            },
+            \label{eq:z2_g_parameters}
+            \\
+            z_R^2
+            &=
+            \frac{
+                L^2g_1g_2(1-g_1g_2)
+            }{
+                \left(
+                    g_1+g_2-2g_1g_2
+                \right)^2
+            }.
+            \label{eq:zR_g_parameters}
+        \end{align}
+        These relations follow by combining the Gaussian-beam curvature relation \eqref{eq:gaussian_curvature}, the mirror curvature matching conditions \eqref{eq:left_mirror_match}--\eqref{eq:right_mirror_match}, the separation $L=z_2-z_1$, and the definitions of $g_1$ and $g_2$.
+
+        Substituting Eqs.~\eqref{eq:z1_g_parameters}--\eqref{eq:zR_g_parameters} into the numerator of Eq.~\eqref{eq:cos_delta_zeta}, one obtains
+        \begin{align}
+            z_R^2+z_1z_2
+            &=
+            \frac{
+                L^2g_1g_2(1-g_1g_2)
+            }{
+                \left(
+                    g_1+g_2-2g_1g_2
+                \right)^2
+            }
+            -
+            \frac{
+                L^2g_1g_2(1-g_1)(1-g_2)
+            }{
+                \left(
+                    g_1+g_2-2g_1g_2
+                \right)^2
+            }
+            \nonumber\\
+            &=
+            \frac{
+                L^2g_1g_2
+            }{
+                \left(
+                    g_1+g_2-2g_1g_2
+                \right)^2
+            }
+            \left[
+                1-g_1g_2
+                -
+                (1-g_1)(1-g_2)
+            \right]
+            \nonumber\\
+            &=
+            \frac{
+                L^2g_1g_2
+            }{
+                \left(
+                    g_1+g_2-2g_1g_2
+                \right)^2
+            }
+            \left[
+                g_1+g_2-2g_1g_2
+            \right]
+            \nonumber\\
+            &=
+            \frac{
+                L^2g_1g_2
+            }{
+                g_1+g_2-2g_1g_2
+            }.
+            \label{eq:numerator_g_result}
+        \end{align}
+
+        Similarly, using $R_1=L/(1-g_1)$ and $R_2=L/(1-g_2)$, the squared denominator in Eq.~\eqref{eq:cos_delta_zeta} becomes
+        \begin{align}
+            (-R_1z_1)(R_2z_2)
+            &=
+            -\frac{L^2z_1z_2}{(1-g_1)(1-g_2)}
+            \nonumber\\
+            &=
+            \frac{
+                L^4g_1g_2
+            }{
+                \left(
+                    g_1+g_2-2g_1g_2
+                \right)^2
+            }.
+            \label{eq:denominator_squared_g_result}
+        \end{align}
+        Thus,
+        \begin{equation}
+            \sqrt{z_R^2+z_1^2}
+            \sqrt{z_R^2+z_2^2}
+            =
+            \frac{
+                L^2\sqrt{g_1g_2}
+            }{
+                \left|
+                g_1+g_2-2g_1g_2
+                \right|
+            }.
+            \label{eq:denominator_g_result}
+        \end{equation}
+        Combining Eqs.~\eqref{eq:numerator_g_result} and~\eqref{eq:denominator_g_result}, one obtains
+        \begin{equation}
+            \cos(\Delta\zeta)
+            =
+            \pm\sqrt{g_1g_2}.
+            \label{eq:cos_delta_zeta_g}
+        \end{equation}
+        Therefore,
+        \begin{equation}
+            \Delta\zeta
+            =
+            \arccos\left(
+                \pm\sqrt{g_1g_2}
+            \right).
+            \label{eq:delta_zeta_final}
+        \end{equation}
+
+        The $\pm$ sign should not be interpreted too literally as simply saying that the waist is inside or outside the cavity. More precisely, it reflects the branch choice of the Gouy phase/eigenphase and the sign convention adopted for mirror radii and propagation direction. Different sign conventions shift the integer longitudinal index $q$ or move the result to an equivalent branch modulo one free spectral range. The physically measurable content is the transverse-mode spacing determined by the Gouy phase modulo $\pi$.
+
+    \paragraph*{Step 4: Final Expression}
+        Substituting Eq.~\eqref{eq:delta_zeta_final} into Eq.~\eqref{eq:nu_general}, we finally obtain
+        \begin{equation}
+            \boxed{
+            \nu_{mnq}
+            =
+            \frac{c}{2L}
+            \left[
+                q
+                +
+                \frac{1}{\pi}
+                (m+n+1)
+                \arccos\left(
+                    \pm\sqrt{g_1g_2}
+                \right)
+            \right]
+            }.
+            \label{eq:resonance_frequencies_final}
+        \end{equation}
+        This is the expression requested in the exercise. It is the $g$-parameter form of Saleh and Teich's Eq.~(11.2-33), specialized to Hermite-Gaussian transverse modes and written with the cavity length denoted by $L$ rather than $d$.
+
+\vspace{0.5cm}
+\subsection*{(b) Separation of Spatial Modes}
+
+    Define the free spectral range as
+    \begin{equation}
+        \nu_{\mathrm{FSR}}
+        =
+        \frac{c}{2L}.
+        \label{eq:fsr_definition}
+    \end{equation}
+    This is the same quantity denoted by Saleh and Teich as $\nu_F$ in Sec.~11.2C. In terms of $\nu_{\mathrm{FSR}}$, Eq.~\eqref{eq:resonance_frequencies_final} can be written as
+    \begin{equation}
+        \nu_{mnq}
+        =
+        \nu_{\mathrm{FSR}}
+        \left[
+            q
+            +
+            (m+n+1)
+            \frac{\Delta\zeta}{\pi}
+        \right],
+        \label{eq:resonance_frequencies_fsr}
+    \end{equation}
+    where
+    \begin{equation}
+        \Delta\zeta
+        =
+        \arccos\left(
+            \pm\sqrt{g_1g_2}
+        \right).
+    \end{equation}
+    This form makes the physics transparent: the longitudinal spacing is set by $L$, while the transverse-mode displacement is set by the Gouy phase accumulated between the two mirrors, which is controlled by the cavity geometry through $g_1g_2$.
+
+    \paragraph*{1. Longitudinal Mode Spacing}
+        If the transverse mode indices $(m,n)$ are fixed and the longitudinal index changes by one,
+        \begin{equation}
+            q\rightarrow q+1,
+        \end{equation}
+        then
+        \begin{equation}
+            \nu_{m,n,q+1}-\nu_{m,n,q}
+            =
+            \nu_{\mathrm{FSR}}
+            =
+            \frac{c}{2L}.
+            \label{eq:longitudinal_spacing}
+        \end{equation}
+        Thus the longitudinal mode spacing does not depend on the mirror curvatures. This is exactly the point emphasized by Saleh and Teich below Eq.~(11.2-30): the spacing between adjacent longitudinal modes is the same as in the planar-mirror resonator.
+
+    \paragraph*{2. Transverse Mode Spacing}
+        Now fix the longitudinal index $q$ and compare two transverse modes with total transverse orders
+        \begin{equation}
+            N=m+n,
+            \qquad
+            N'=m'+n'.
+        \end{equation}
+        Their frequency difference is
+        \begin{equation}
+            \nu_{mnq}-\nu_{m'n'q}
+            =
+            \nu_{\mathrm{FSR}}
+            (N-N')
+            \frac{\Delta\zeta}{\pi}.
+            \label{eq:transverse_spacing_general}
+        \end{equation}
+        For adjacent transverse orders, $N'=N+1$, the magnitude of the spacing is
+        \begin{equation}
+            \Delta\nu_{\mathrm{trans}}
+            =
+            \nu_{\mathrm{FSR}}
+            \frac{\Delta\zeta}{\pi}
+            =
+            \frac{c}{2L}
+            \frac{
+                \arccos\left(
+                    \pm\sqrt{g_1g_2}
+                \right)
+            }{\pi}.
+            \label{eq:transverse_spacing}
+        \end{equation}
+        This is the same physical statement as Saleh and Teich's Eq.~(11.2-34), which gives the frequency displacement between two transverse-mode families in terms of the difference between their total transverse orders.
+
+    \paragraph*{3. Degeneracy of Modes with the Same Total Order}
+        The resonance frequency depends on $(m,n)$ only through the sum
+        \begin{equation}
+            N=m+n.
+        \end{equation}
+        Therefore, all Hermite-Gaussian modes with the same total order are degenerate:
+        \begin{equation}
+            m+n=m'+n'
+            \quad
+            \Rightarrow
+            \quad
+            \nu_{mnq}=\nu_{m'n'q}.
+            \label{eq:same_order_degeneracy}
+        \end{equation}
+        For example,
+        \begin{equation}
+            \mathrm{HG}_{10}
+            \quad
+            \text{and}
+            \quad
+            \mathrm{HG}_{01}
+        \end{equation}
+        have the same resonance frequency for the same longitudinal index $q$. Likewise, the three modes
+        \begin{equation}
+            \mathrm{HG}_{20},
+            \qquad
+            \mathrm{HG}_{11},
+            \qquad
+            \mathrm{HG}_{02}
+        \end{equation}
+        are degenerate with one another because all have $m+n=2$.
+
+        This degeneracy is a direct consequence of cylindrical symmetry in the ideal spherical-mirror resonator. In a real cavity, astigmatism, mirror imperfections, thermal lensing, birefringence, finite apertures, or alignment errors can lift this degeneracy.
+
+    \paragraph*{4. Role of the Cavity Geometry}
+        The transverse-mode spacing is governed by the dimensionless quantity
+        \begin{equation}
+            \frac{\Delta\zeta}{\pi}
+            =
+            \frac{1}{\pi}
+            \arccos\left(
+                \pm\sqrt{g_1g_2}
+            \right).
+            \label{eq:geometry_tuning_factor}
+        \end{equation}
+        Thus, by changing the mirror radii $R_1$ and $R_2$ relative to the cavity length $L$, one changes $g_1g_2$, which changes the Gouy phase per pass and therefore shifts the transverse-mode families relative to the longitudinal comb.
+
+        In practice, the stable-resonator condition is usually written as
+        \begin{equation}
+            0<g_1g_2<1,
+            \label{eq:stability_condition_practical}
+        \end{equation}
+        with the limiting cases $g_1g_2=0$ and $g_1g_2=1$ treated carefully because they correspond to highly degenerate or marginally stable geometries. The ideal formula remains useful for understanding these limits, but real resonators also have finite aperture and diffraction losses, which Saleh and Teich discuss in Sec.~11.2E.
+
+    \paragraph*{5. Important Limiting Cases}
+
+        \begin{itemize}
+            \item \textbf{Planar cavity: $R_1=R_2=\infty$.}
+
+            In this case,
+            \begin{equation}
+                g_1=g_2=1,
+                \qquad
+                g_1g_2=1.
+            \end{equation}
+            Taking the branch with
+            \[
+                \Delta\zeta=\arccos(1)=0,
+            \]
+            Eq.~\eqref{eq:transverse_spacing} gives
+            \begin{equation}
+                \Delta\nu_{\mathrm{trans}}=0.
+            \end{equation}
+            Thus the transverse modes are degenerate in frequency in the ideal planar limit. Physically, this happens because a plane wave has no focusing and therefore no Gouy phase. However, the exactly planar resonator is marginal rather than robustly stable; in practice, finite mirror apertures and diffraction losses become important.
+
+            \item \textbf{Symmetric confocal cavity: $R_1=R_2=L$.}
+
+            Then
+            \begin{equation}
+                g_1=g_2=0,
+                \qquad
+                g_1g_2=0.
+            \end{equation}
+            Therefore,
+            \begin{equation}
+                \Delta\zeta
+                =
+                \arccos(0)
+                =
+                \frac{\pi}{2},
+            \end{equation}
+            and
+            \begin{equation}
+                \Delta\nu_{\mathrm{trans}}
+                =
+                \frac{\nu_{\mathrm{FSR}}}{2}.
+            \end{equation}
+            Thus adjacent transverse orders are shifted by half of the longitudinal free spectral range. Consequently, modes with total order differing by two can overlap with neighboring longitudinal modes. For example,
+            \begin{equation}
+                \nu_{N=2,q}
+                =
+                \nu_{N=0,q+1}.
+            \end{equation}
+            This is the degeneracy pattern emphasized in Saleh and Teich's discussion of the symmetric confocal resonator.
+
+            \item \textbf{Concentric cavity: $R_1=R_2=L/2$.}
+
+            In this limiting case,
+            \begin{equation}
+                g_1=g_2=-1,
+                \qquad
+                g_1g_2=1.
+            \end{equation}
+            Choosing the branch
+            \[
+                \Delta\zeta=\arccos(-1)=\pi,
+            \]
+            gives
+            \begin{equation}
+                \Delta\nu_{\mathrm{trans}}
+                =
+                \nu_{\mathrm{FSR}}.
+            \end{equation}
+            Thus changing the transverse order by one shifts the resonance by one full free spectral range, which can be reabsorbed into the longitudinal index $q$. This produces a strong modal degeneracy in the ideal formula. Like the planar resonator, the exactly concentric resonator is a marginal limiting case and is very sensitive to alignment and diffraction losses.
+
+            \item \textbf{Generic stable spherical resonator.}
+
+            For a generic stable resonator,
+            \begin{equation}
+                0<g_1g_2<1,
+            \end{equation}
+            and the transverse spacing is a nontrivial fraction of the free spectral range:
+            \begin{equation}
+                0<
+                \Delta\nu_{\mathrm{trans}}
+                <
+                \nu_{\mathrm{FSR}}.
+            \end{equation}
+            In this case, the transverse-mode resonances are not generally degenerate with the longitudinal resonances of the fundamental mode. This is the useful regime for spatial-mode filtering: by choosing $R_1$, $R_2$, and $L$, one can engineer the Gouy phase so that unwanted higher-order spatial modes are spectrally separated from the desired mode.
+        \end{itemize}
+
+    \paragraph*{Summary of the Physical Meaning}
+        The cavity length $L$ determines the longitudinal free spectral range,
+        \[
+            \nu_{\mathrm{FSR}}=\frac{c}{2L}.
+        \]
+        The mirror curvatures enter through $g_1g_2$ and determine the Gouy phase accumulated by the transverse mode. Since higher-order Hermite-Gaussian modes acquire an additional Gouy phase proportional to $m+n+1$, their resonance frequencies are shifted relative to the fundamental Gaussian mode by
+        \begin{equation}
+            \Delta\nu_N
+            =
+            \nu_{\mathrm{FSR}}
+            (N+1)
+            \frac{\Delta\zeta}{\pi},
+            \qquad
+            N=m+n.
+        \end{equation}
+        Therefore, the separation of spatial modes is not an independent property of the mirrors alone or of the wavelength alone: it is a geometric consequence of how much Gouy phase the resonator imposes per pass.
+
+\end{resolucao}
